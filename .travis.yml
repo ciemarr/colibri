@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "node"
+  - node
 
 env:
   - CXX=g++-4.8
@@ -14,7 +14,13 @@ addons:
 cache:
   yarn: true
   directories:
-    - ~/.cache # for Cypress
+    - "~/.cache"
 
 before_script:
   - yarn serve &
+
+deploy:
+  provider: heroku
+  app: colibri-reading-app
+  api_key:
+    secure: "FKQT/DyWpwOUGH0NN4AvrmTNbaGx5IJOIy7aHsjzrJqvOfUJW8Jd05DTlVP4LYzZpempYR8FnjYwG72hLGqHpwNvkh86Dn6wgLnuifCQgKB2yOUykE3zBovggtoOq/KrqCN/OJddWHDVvw91eyr5yqefoAuC0TUvoBxHDYlVtQ3xzpTG7bX8r5lSeCjX8lHuKM3l1qtzBebNJzHIin/N3zad+UKmyOuHPFn3NuJNI2tH2lKnvTOgm1bb4ubpmdLWYK10a7sXfioOSB6VU5r1rI+ay3Eqp3uEWzvFafK1tZGa9hsIW9OvXf1c0AYGPk44+1iPCC+sQi+cgDIYkZjHYn1n8XrcIjATSHOjKQskTl+xjVN5/gf3eN0w4R+sZFaVM8VD9DamjoX3l0ufoi2XrlNq5/cDS4VktBeRTfEVMJNNIqhw83jODHjTl1ckyKL5NBSuDtCFubQ7inqMmNLQ9MYUEo28WLZPKYr8xOR2MJWjEkQnEaE+dzGGqEffgsdbOScynxB0SPmc0DpEcPtM6euOl0xDVJfkuMh9cr4koZWqBOputKGkB9ze+0XxhqSy0hOLEYIc4F90eiQUAqq7iK9/RD94tN1o/2hZ2MWyC2E63FPt8v78Wn4WxcliLDUvpIOcaxUzL9D1SudocMLAHmhkkLgkKErei3NO5I4I21U="
