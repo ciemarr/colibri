@@ -11,4 +11,4 @@ addons:
       - g++-4.8
 
 before_script:
-  - yarn serve
+  - yarn serve &
