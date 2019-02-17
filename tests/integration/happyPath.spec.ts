@@ -6,8 +6,8 @@ context('Happy path', () => {
   });
 
   it('shows story text', () => {
-    cy.get('.Story-text').contains('Lorem ipsum');
-    cy.get('.Story-title').contains('Lorem Ipsum');
-    cy.get('.Story-author').contains('Cicero');
+    cy.get('.Story-title').contains('Gibberish');
+    cy.get('.Story-author').contains('J.S. Rando');
+    cy.get('.Story-text').should('exist');
   });
 });
