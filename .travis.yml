@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "node"
+
 env:
   - CXX=g++-4.8
 addons:
@@ -9,6 +10,11 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+
+cache:
+  yarn: true
+  directories:
+    - ~/.cache # for Cypress
 
 before_script:
   - yarn serve &
