@@ -9,9 +9,7 @@
     "test": "yarn run test:unit && yarn run test:integration",
     "test:unit": "vue-cli-service test:unit",
     "test:integration": "yarn run cypress run",
-    "heroku-prebuild": "NPM_CONFIG_PRODUCTION=false NODE_ENV= NPM_CONFIG_PRODUCTION=false NODE_ENV=development yarn install",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=true NODE_ENV=production",
-    "start": "yarn run build && node src/server.js"
+    "start": "yarn install --production=false && yarn run build && node src/server.js"
   },
   "dependencies": {
     "connect-history-api-fallback": "^1.6.0",
