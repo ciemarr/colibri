@@ -30,6 +30,8 @@ export default class Story extends Vue {
 .Story {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 .Story-metadata {
@@ -50,5 +52,6 @@ export default class Story extends Vue {
 .Story-text {
   flex-grow: 1;
   padding: 0.5rem 1rem;
+  overflow-y: auto;
 }
 </style>
