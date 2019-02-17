@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "serve": "yarn run vue-cli-service serve",
+    "build": "yarn run vue-cli-service build",
+    "lint": "yarn run vue-cli-service lint",
     "test": "yarn run test:unit && yarn run test:integration",
-    "test:unit": "vue-cli-service test:unit",
+    "test:unit": "yarn run vue-cli-service test:unit",
     "test:integration": "yarn run cypress run",
     "start": "yarn run build && node src/server.js"
   },
@@ -36,8 +36,10 @@
     "lint-staged": "^8.1.0",
     "sass": "^1.16.0",
     "sass-loader": "^7.1.0",
+    "tslint": "^5.12.1",
     "tslint-no-unused-expression-chai": "^0.1.4",
     "typescript": "^3.0.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.29.4"
   }
 }
