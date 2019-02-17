@@ -24,3 +24,7 @@ deploy:
   app: colibri-reading-app
   api_key:
     secure: ROvi221m9Z1dIQz8bZkD47FWJqLnx2jy92sclitD5UoY8QwQ+PRWxpj1cvrUFYEDqPZ8gGkxASWSIzWXXqFq0Vz8kMH3OkZWUZvE498kenFlDLYda+FU/cx1aSYR/fiHCsIc6kbqUMgXCsBzdMtwyCMH5oYa9qeMruk4WOq73oLSe8orxCRE5s7TDZot5XloQOLIKAW5BWNOT9R1d5Ub4aXHX0arbyBkJHCzVMMNYmKNfosjUzQevOYkuFA+aT0aV0/wxP9RzlPd+Zbxe0a/F8m2bVGOdYtXZVpg48D40MXgot2IeJX0sJY3P6G1i6wMZswvnqyb1lvwDPZ/g9xgOrMr8NTYNiN4GuqXFW4XDkaL9gNBwcqMuJhUShwsITQqZZ5n5emqzIeQCJscBsUfTosT8j+O1lOK/7/zPUzEJCS8GS0pg8yAHYq3TSWErfc2wi5RTDL6JXDrAy830HDUtKmxf+I7z/plbNV50uQ5A9t+dKr7AQy2nMAwovcYgLFlaMJel9T9vIYn6ZqqGlP/qswuLelKCUb/SgEm1vlk5FUB0oyiXBnesqd7ESJmNe1QRwD0RMtdMto2wXpFBMWW/bNVQrWNi8PqPArv6lwUCUrNyqJg3bpZZO9uOhiJdu0+/+SuV+be1LkfuBYDCX7vqfNO22oZSLBLr30HMGc9Jcg=
+
+after_script:
+  - curl -o trigger.sh https://raw.githubusercontent.com/Arthaey/travis-build-history-badges/master/bin/trigger_badges_update.sh
+  - sh trigger.sh
