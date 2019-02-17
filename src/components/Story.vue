@@ -52,6 +52,7 @@ export default class Story extends Vue {
 .Story-text {
   flex-grow: 1;
   padding: 0.5rem 1rem;
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; // iOS momentum scrolling
 }
 </style>
