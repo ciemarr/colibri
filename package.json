@@ -9,7 +9,7 @@
     "test": "yarn run test:unit && yarn run test:integration",
     "test:unit": "vue-cli-service test:unit",
     "test:integration": "yarn run cypress run",
-    "start": "PATH=$PATH:./node_modules/.bin yarn run build && node src/server.js"
+    "start": "yarn install && yarn run build && node src/server.js"
   },
   "dependencies": {
     "connect-history-api-fallback": "^1.6.0",
