@@ -6,8 +6,10 @@
       <span class="Story-author">{{ author }}</span>
     </div>
 
-    <div class="Story-text">
-      <p>{{ text }}</p>
+    <div class="Story-text-container">
+      <div class="Story-text">
+        <p>{{ text }}</p>
+      </div>
     </div>
 
   </div>
@@ -49,10 +51,15 @@ export default class Story extends Vue {
   font-style: italic;
 }
 
-.Story-text {
+.Story-text-container {
   flex-grow: 1;
   padding: 0.5rem 1rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; // iOS momentum scrolling
+}
+
+.Story-text {
+  max-width: 27rem;
+  margin: 0 auto;
 }
 </style>
