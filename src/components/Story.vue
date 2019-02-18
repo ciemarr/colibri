@@ -6,10 +6,17 @@
       <span class="Story-author">{{ author }}</span>
     </div>
 
-    <div class="Story-text-container">
-      <div class="Story-text">
+    <div class="Story-text-container" ref="storyTextContainer">
+      <div class="Story-text" ref="storyText">
         <p>{{ text }}</p>
       </div>
+    </div>
+
+    <div class="Story-pages-container">
+      <span class="Story-pages">
+        <span class="Story-pages-total">{{ totalPages }}</span>
+        pages
+      </span>
     </div>
 
   </div>
@@ -24,6 +31,38 @@ export default class Story extends Vue {
   @Prop() private text!: string;
   @Prop() private title!: string;
   @Prop() private author!: string;
+
+  private currentPage: number;
+  private totalPages: number;
+
+  private DEFAULT_LINE_HEIGHT = '16px';
+
+  constructor() {
+    super();
+    this.currentPage = 1;
+    this.totalPages = 0;
+  }
+
+  mounted() {
+    this.totalPages = this.calculateTotalPages();
+  }
+
+  calculateTotalPages(): number {
+    const storyTextContainer = this.$refs.storyTextContainer as Element;
+    const storyTextContainerHeight = storyTextContainer.clientHeight;
+
+    const storyTextEl = this.$refs.storyText as Element;
+    const storyTextHeight = storyTextEl.clientHeight;
+
+    const lineHeightStr = window.getComputedStyle(storyTextEl).lineHeight;
+    const lineHeight = parseInt(lineHeightStr || this.DEFAULT_LINE_HEIGHT, 10);
+
+    const totalLines = storyTextHeight / lineHeight;
+    const visibleLines = storyTextContainerHeight / lineHeight;
+
+    const totalPages = Math.floor(totalLines / visibleLines) + 1;
+    return totalPages;
+  }
 }
 </script>
 
@@ -36,10 +75,14 @@ export default class Story extends Vue {
   overflow-y: hidden;
 }
 
-.Story-metadata {
+%Story-header-footer {
   background-color: #ccc;
-  padding: 1rem;
+  padding: 1em 1em 2em 1em;
   display: flex;
+}
+
+.Story-metadata {
+  @extend %Story-header-footer;
 }
 
 .Story-title {
@@ -61,5 +104,21 @@ export default class Story extends Vue {
 .Story-text {
   max-width: 27rem;
   margin: 0 auto;
+  line-height: 1em;
 }
+
+.Story-pages-container {
+  @extend %Story-header-footer;
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.Story-pages {
+  margin: 0 auto;
+}
+
+.Story-pages-current {
+  font-weight: bold;
+}
+
 </style>
