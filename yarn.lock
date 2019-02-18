@@ -2716,6 +2716,11 @@ css-declaration-sorter@^4.0.1:
     postcss "^7.0.1"
     timsort "^0.3.0"
 
+css-element-queries@^1.0.2:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.1.1.tgz#129e104ecb277aa6337b7302cbb6d511c2d1633a"
+  integrity sha512-/PX6Bkk77ShgbOx/mpawHdEvS3PGgy1mmMktcztDPndWdMJxcorcQiivrs+nEljqtBpvNEhAmQky9tQR6FSm8Q==
+
 css-loader@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-1.0.1.tgz#6885bb5233b35ec47b006057da01cc640b6b79fe"
@@ -4570,6 +4575,11 @@ interpret@^1.0.1:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
+intersection-observer@^0.5.0, intersection-observer@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.5.1.tgz#e340fc56ce74290fe2b2394d1ce88c4353ac6dfa"
+  integrity sha512-Zd7Plneq82kiXFixs7bX62YnuZ0BMRci9br7io88LwDyF3V43cQMI+G5IiTlTNTt+LsDUppl19J/M2Fp9UkH6g==
+
 invariant@^2.2.2:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
@@ -5350,6 +5360,11 @@ lodash._reinterpolate@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 lodash.defaultsdeep@^4.6.0:
   version "4.6.0"
@@ -8657,6 +8672,15 @@ vue-property-decorator@^7.0.0:
   integrity sha512-HarXfTQ/Nxm4s/APpAaGIGHq5ZzslApImQy8ZrtkfGamw8rUFAVgMS5C50/AQ80+wfw3Wpnf4bNzbmj75m/k2Q==
   dependencies:
     vue-class-component "^6.2.0"
+
+vue-resize-directive@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-resize-directive/-/vue-resize-directive-1.1.4.tgz#6a76fddc9d9c38f078d3be48b99de5e56d71b21c"
+  integrity sha512-/0prWY8IkPTUmlGTjTseG3nrIdOPfG2N0+xZZGNTWp4B/HzHoM0mxkN9RGVjnpE1pdXRySQ7kzRzpjkMU4rchQ==
+  dependencies:
+    css-element-queries "^1.0.2"
+    intersection-observer "^0.5.0"
+    lodash.debounce "^4.0.8"
 
 vue-router@^3.0.1:
   version "3.0.2"

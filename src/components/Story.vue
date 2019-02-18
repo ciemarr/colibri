@@ -1,5 +1,5 @@
 <template>
-  <div class="Story">
+  <div class="Story" v-resize.initial="onResize">
 
     <div class="Story-metadata">
       <span class="Story-title">{{ title }}</span>
@@ -25,8 +25,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import resize from 'vue-resize-directive';
 
-@Component
+@Component({
+  directives: { resize }
+})
 export default class Story extends Vue {
   @Prop() private text!: string;
   @Prop() private title!: string;
@@ -43,7 +46,7 @@ export default class Story extends Vue {
     this.totalPages = 0;
   }
 
-  mounted() {
+  onResize() {
     this.totalPages = this.calculateTotalPages();
   }
 
