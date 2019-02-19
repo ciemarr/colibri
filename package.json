@@ -13,6 +13,7 @@
   },
   "heroku-run-build-script": true,
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.3.1",
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-pwa": "^3.4.0",
     "@vue/cli-plugin-typescript": "^3.4.0",
