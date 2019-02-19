@@ -32,20 +32,14 @@ import resize from 'vue-resize-directive';
   directives: { resize }
 })
 export default class Story extends Vue {
+  public currentPage: number = 1;
+  public totalPages: number = 0;
+
   @Prop() private text!: string;
   @Prop() private title!: string;
   @Prop() private author!: string;
 
-  public currentPage: number;
-  public totalPages: number;
-
   private DEFAULT_LINE_HEIGHT = '16px';
-
-  constructor() {
-    super();
-    this.currentPage = 1;
-    this.totalPages = 0;
-  }
 
   public calculateTotalPages(
     visibleHeight: number,
@@ -67,20 +61,17 @@ export default class Story extends Vue {
   }
 
   private updateTotalPages(): void {
-    const storyTextContainer = this.$refs.storyTextContainer as Element;
     const storyTextEl = this.$refs.storyText as Element;
-
     const lineHeightStr = window.getComputedStyle(storyTextEl).lineHeight;
     const lineHeight = parseInt(lineHeightStr || this.DEFAULT_LINE_HEIGHT, 10);
 
     const totalPages = this.calculateTotalPages(
-      storyTextContainer.clientHeight,
+      window.innerHeight,
       storyTextEl.clientHeight,
       lineHeight
     );
 
     this.totalPages = totalPages;
-    this.$forceUpdate();
   }
 }
 </script>
