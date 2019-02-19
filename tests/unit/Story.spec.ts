@@ -18,6 +18,11 @@ describe('Story', () => {
     expect(subject.find('.Story-author').text()).to.equal(author);
   });
 
+  it('renders an end-of-story marker', () => {
+    const subject = shallow();
+    expect(subject.find('.Story-fin')).to.exist;
+  });
+
   it('resize happens on mount', () => {
     const resizeDirective: DirectiveOptions = {
       inserted: sinon.spy(),

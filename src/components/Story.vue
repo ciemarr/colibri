@@ -10,6 +10,7 @@
       <div class="Story-text" ref="storyText">
         <p>{{ text }}</p>
       </div>
+      <div class="Story-fin">❧</div>
     </div>
 
     <div class="Story-pages-container">
@@ -139,4 +140,7 @@ export default class Story extends Vue {
   font-weight: bold;
 }
 
+.Story-fin {
+  text-align: center;
+}
 </style>

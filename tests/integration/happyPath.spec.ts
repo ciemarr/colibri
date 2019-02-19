@@ -9,5 +9,6 @@ context('Happy path', () => {
     cy.get('.Story-title').contains('Gibberish');
     cy.get('.Story-author').contains('J.S. Rando');
     cy.get('.Story-text').should('exist');
+    cy.get('.Story-fin').should('exist');
   });
 });
