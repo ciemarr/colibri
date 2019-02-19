@@ -35,23 +35,15 @@ export default class Story extends Vue {
   @Prop() private title!: string;
   @Prop() private author!: string;
 
-  private _currentPage: number;
-  private _totalPages: number;
+  public currentPage: number;
+  public totalPages: number;
 
   private DEFAULT_LINE_HEIGHT = '16px';
 
   constructor() {
     super();
-    this._currentPage = 1;
-    this._totalPages = 0;
-  }
-
-  public get currentPage() {
-    return this._currentPage;
-  };
-
-  public get totalPages() {
-    return this._totalPages;
+    this.currentPage = 1;
+    this.totalPages = 0;
   }
 
   public calculateTotalPages(
@@ -86,7 +78,8 @@ export default class Story extends Vue {
       lineHeight
     );
 
-    this._totalPages = totalPages;
+    this.totalPages = totalPages;
+    this.$forceUpdate();
   }
 }
 </script>
