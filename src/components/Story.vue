@@ -35,36 +35,58 @@ export default class Story extends Vue {
   @Prop() private title!: string;
   @Prop() private author!: string;
 
-  private currentPage: number;
-  private totalPages: number;
+  private _currentPage: number;
+  private _totalPages: number;
 
   private DEFAULT_LINE_HEIGHT = '16px';
 
   constructor() {
     super();
-    this.currentPage = 1;
-    this.totalPages = 0;
+    this._currentPage = 1;
+    this._totalPages = 0;
   }
 
-  onResize() {
-    this.totalPages = this.calculateTotalPages();
+  public get currentPage() {
+    return this._currentPage;
+  };
+
+  public get totalPages() {
+    return this._totalPages;
   }
 
-  calculateTotalPages(): number {
+  public calculateTotalPages(
+    visibleHeight: number,
+    fullStoryTextHeight: number,
+    lineHeight: number
+  ): number {
+    const totalLines = fullStoryTextHeight / lineHeight;
+    const visibleLines = visibleHeight / lineHeight;
+
+    const floatPages = totalLines / visibleLines;
+    const integerPages = Math.floor(floatPages);
+    const maybeExtraPage = (floatPages > integerPages ? 1 : 0);
+
+    return integerPages + maybeExtraPage;
+  }
+
+  private onResize(): void {
+    this.updateTotalPages();
+  }
+
+  private updateTotalPages(): void {
     const storyTextContainer = this.$refs.storyTextContainer as Element;
-    const storyTextContainerHeight = storyTextContainer.clientHeight;
-
     const storyTextEl = this.$refs.storyText as Element;
-    const storyTextHeight = storyTextEl.clientHeight;
 
     const lineHeightStr = window.getComputedStyle(storyTextEl).lineHeight;
     const lineHeight = parseInt(lineHeightStr || this.DEFAULT_LINE_HEIGHT, 10);
 
-    const totalLines = storyTextHeight / lineHeight;
-    const visibleLines = storyTextContainerHeight / lineHeight;
+    const totalPages = this.calculateTotalPages(
+      storyTextContainer.clientHeight,
+      storyTextEl.clientHeight,
+      lineHeight
+    );
 
-    const totalPages = Math.floor(totalLines / visibleLines) + 1;
-    return totalPages;
+    this._totalPages = totalPages;
   }
 }
 </script>

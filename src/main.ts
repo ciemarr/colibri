@@ -1,5 +1,3 @@
-import 'intersection-observer'; // polyfill for resize handler
-
 import Vue from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';
