@@ -90,13 +90,11 @@ export default class Story extends Vue {
 .Story {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow-y: hidden;
 }
 
 %Story-header-footer {
   background-color: #ccc;
-  padding: 1em 1em 2em 1em;
+  padding: 1em;
   display: flex;
 }
 
@@ -116,8 +114,6 @@ export default class Story extends Vue {
 .Story-text-container {
   flex-grow: 1;
   padding: 0.5rem 1rem;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; // iOS momentum scrolling
 }
 
 .Story-text {
@@ -128,6 +124,8 @@ export default class Story extends Vue {
 
 .Story-pages-container {
   @extend %Story-header-footer;
+  position: sticky;
+  bottom: 0;
   font-size: 0.75rem;
   font-style: italic;
 }
