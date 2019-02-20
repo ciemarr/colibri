@@ -23,13 +23,27 @@ describe('StoryLoader', () => {
     expect(axios.get).to.have.been.calledOnceWith(storyUrl);
   });
 
-  it('shows a loading indicator', () => {
+  it('shows a loading indicator', async () => {
     const axios = {
       get: sinon.stub().returns(new Promise(() => {}))
     };
 
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
+    await subject.vm.$nextTick();
 
     expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
   });
+
+  /*
+  it('shows a failure indicator', async () => {
+    const axios = {
+      get: sinon.stub().returns(Promise.reject()) // does not work in test??
+    };
+
+    const subject = shallowMount(StoryLoader, { propsData: { axios } });
+    await subject.vm.$nextTick();
+
+    expect(subject.find('.StoryLoader').text()).to.eq('Failed to load.');
+  });
+  */
 });

@@ -1,14 +1,19 @@
-<template :key="hasLoaded">
-
+<template :key="loadingStatus">
   <div class="StoryLoader">
 
-    <Story v-if="hasLoaded"
+    <p v-if="'loading' === loadingStatus">
+      Loading...
+    </p>
+
+    <Story v-if="'succeeded' === loadingStatus"
       v-bind:title="title"
       v-bind:author="author"
       v-bind:text="text"
      />
 
-    <p v-else>Loading...</p>
+    <p v-if="'failed' === loadingStatus">
+      Failed to load.
+    </p>
 
     <pre>{{ storyUrl }}</pre>
   </div>
@@ -23,22 +28,31 @@ import Story from '@/components/Story.vue';
 @Component({
   components: {
     Story,
-  },
+  }
 })
 export default class StoryLoader extends Vue {
   public title: string | null = null;
   public author: string | null = null;
   public text: string | null = null;
-  private hasLoaded: boolean = false;
+  private loadingStatus: 'loading' | 'succeeded' | 'failed';
 
   @Prop() private storyUrl!: string;
   @Prop() private axios!: AxiosInstance;
 
+  constructor() {
+    super();
+    this.loadingStatus = 'loading';
+  }
+
   private async created() {
     if (this.storyUrl && this.axios) {
-      const response = await this.axios.get(this.storyUrl);
-      this.text = response.data;
-      this.hasLoaded = true;
+      try {
+        const response = await this.axios.get(this.storyUrl);
+        this.text = response.data;
+        this.loadingStatus = 'succeeded';
+      } catch (error) {
+        this.loadingStatus = 'failed';
+      }
     }
   }
 
