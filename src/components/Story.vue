@@ -11,7 +11,7 @@
 
     <div class="Story-text-container" ref="storyTextContainer">
       <div class="Story-text" ref="storyText">
-        <p>{{ text }}</p>
+        <p v-html="text"></p>
       </div>
       <div class="Story-fin">❧</div>
     </div>

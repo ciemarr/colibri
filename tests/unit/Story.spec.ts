@@ -24,6 +24,11 @@ describe('Story', () => {
     expect(subject.find('.Story-metadata').text()).to.eq(storyUrl);
   });
 
+  it('renders RAW HTML 😱', () => {
+    const subject = shallow({ propsData: { text: '<p>html</p>' }});
+    expect(subject.find('.Story-text').text()).to.eq('html');
+  });
+
   it('renders an end-of-story marker', () => {
     const subject = shallow();
     expect(subject.find('.Story-fin')).to.exist;
