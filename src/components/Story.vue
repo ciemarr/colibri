@@ -11,7 +11,7 @@
 
     <div class="Story-text-container" ref="storyTextContainer">
       <div class="Story-text" ref="storyText">
-        <p v-html="$sanitize(text, {allowedTags: $sanitize.defaults.allowedTags.concat(['h1','h2'])})"></p>
+        <p v-html="$sanitize(text)"></p>
       </div>
       <div class="Story-fin">❧</div>
     </div>
