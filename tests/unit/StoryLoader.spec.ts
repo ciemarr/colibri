@@ -28,10 +28,17 @@ describe('StoryLoader', () => {
       get: sinon.stub().returns(new Promise(() => {}))
     };
 
-    const subject = shallowMount(StoryLoader, { propsData: { axios } });
+    const subject = shallowMount(StoryLoader,
+      { propsData: { axios, storyUrl: 'some-url' } });
     await subject.vm.$nextTick();
 
-    expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
+    expect(subject.find('.StoryLoader').text()).to.contain('Loading...');
+  });
+
+  it('shows instructions when no story URL is given', () => {
+    const subject = shallowMount(StoryLoader);
+    const expectedMsg = 'http://localhost/?url=https://example.com/url/of/a/story/to/load';
+    expect(subject.find('.StoryLoader').text()).to.contain(expectedMsg);
   });
 
   /*
@@ -43,7 +50,7 @@ describe('StoryLoader', () => {
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
     await subject.vm.$nextTick();
 
-    expect(subject.find('.StoryLoader').text()).to.eq('Failed to load.');
+    expect(subject.find('.StoryLoader').text()).to.contain('Failed to load.');
   });
   */
 });

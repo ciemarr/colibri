@@ -7,9 +7,10 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "yarn run test:unit && yarn run test:integration",
-    "test:unit": "vue-cli-service test:unit --include tests/setup.js",
+    "test:unit": "vue-cli-service test:unit --include tests/setup.js --include tests/globalHooks.ts",
     "test:integration": "yarn run cypress run",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "mocha-webpack": "mocha-webpack --webpack-config node_modules/@vue/cli-service/webpack.config.js --require tests/setup.js tests/**/*.spec.ts"
   },
   "heroku-run-build-script": true,
   "dependencies": {
