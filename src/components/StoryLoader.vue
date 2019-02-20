@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { AxiosInstance } from 'axios';
 import Story from '@/components/Story.vue';
 
 @Component({
@@ -20,17 +21,18 @@ import Story from '@/components/Story.vue';
   },
 })
 export default class StoryLoader extends Vue {
-  public title: string;
-  public author: string;
-  public text: string;
+  public title: string | null = null;
+  public author: string | null = null;
+  public text: string | null = null;
 
   @Prop() private storyUrl!: string;
+  @Prop() private axios!: AxiosInstance;
 
-  constructor() {
-    super();
-    this.title = 'Gibberish';
-    this.author = 'J.S. Rando';
-    this.text = this.gibberish(10000);
+  private async created() {
+    if (this.storyUrl && this.axios) {
+      const response = await this.axios.get(this.storyUrl);
+      this.text = response.data;
+    }
   }
 
   private gibberish(len: number): string {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import axios from 'axios';
 import App from './App.vue';
 import StoryLoader from './components/StoryLoader.vue';
 import './registerServiceWorker';
@@ -16,6 +17,7 @@ const router = new VueRouter({
       component: StoryLoader,
       props: (route) => ({
         storyUrl: route.query.url,
+        axios: axios,
       }),
     },
   ],

@@ -35,9 +35,9 @@ export default class Story extends Vue {
   public currentPage: number = 1;
   public totalPages: number = 0;
 
-  @Prop() private text!: string;
-  @Prop() private title!: string;
-  @Prop() private author!: string;
+  @Prop() public readonly text!: string;
+  @Prop() public readonly title!: string;
+  @Prop() public readonly author!: string;
 
   private DEFAULT_LINE_HEIGHT = '16px';
 
@@ -81,6 +81,7 @@ export default class Story extends Vue {
 .Story {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 %Story-header-footer {

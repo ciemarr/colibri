@@ -1,17 +1,25 @@
 import { expect } from 'chai';
+import sinon from 'sinon';
 import { shallowMount } from '@vue/test-utils';
 import StoryLoader from '@/components/StoryLoader.vue';
 import Story from '@/components/Story.vue';
 
 describe('StoryLoader', () => {
-  it('renders a default story', () => {
-    const subject = shallowMount(StoryLoader);
-    expect(subject.find(Story)).to.exist;
-  });
-
-  it('loads a story by URL'); /*, () => {
+  it('loads a story by URL', async () => {
     const storyUrl = 'http://www.example.com/story/42';
-    const subject = shallowMount(StoryLoader, { propsData: { storyUrl } })
-    assert.fail('TODO');
-  });*/
+    const data = 'Hello, world!';
+
+    const axios = {
+      get: sinon.stub().withArgs(storyUrl).returns(Promise.resolve({data}))
+    };
+
+    const subject = shallowMount(StoryLoader, {
+      propsData: { storyUrl, axios },
+    });
+    await subject.vm.$nextTick();
+
+    const story = subject.find(Story).vm as Story;
+    expect(story.text).to.eq(data);
+    expect(axios.get).to.have.been.calledOnceWith(storyUrl);
+  });
 });
