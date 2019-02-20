@@ -1,10 +1,15 @@
-<template>
+<template :key="hasLoaded">
+
   <div class="StoryLoader">
-    <Story
+
+    <Story v-if="hasLoaded"
       v-bind:title="title"
       v-bind:author="author"
       v-bind:text="text"
      />
+
+    <p v-else>Loading...</p>
+
     <pre>{{ storyUrl }}</pre>
   </div>
 </template>
@@ -24,6 +29,7 @@ export default class StoryLoader extends Vue {
   public title: string | null = null;
   public author: string | null = null;
   public text: string | null = null;
+  private hasLoaded: boolean = false;
 
   @Prop() private storyUrl!: string;
   @Prop() private axios!: AxiosInstance;
@@ -32,6 +38,7 @@ export default class StoryLoader extends Vue {
     if (this.storyUrl && this.axios) {
       const response = await this.axios.get(this.storyUrl);
       this.text = response.data;
+      this.hasLoaded = true;
     }
   }
 

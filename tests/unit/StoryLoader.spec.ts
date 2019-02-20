@@ -22,4 +22,14 @@ describe('StoryLoader', () => {
     expect(story.text).to.eq(data);
     expect(axios.get).to.have.been.calledOnceWith(storyUrl);
   });
+
+  it('shows a loading indicator', () => {
+    const axios = {
+      get: sinon.stub().returns(new Promise(() => {}))
+    };
+
+    const subject = shallowMount(StoryLoader, { propsData: { axios } });
+
+    expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
+  });
 });
