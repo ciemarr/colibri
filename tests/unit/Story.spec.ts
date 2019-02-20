@@ -24,10 +24,12 @@ describe('Story', () => {
     expect(subject.find('.Story-metadata').text()).to.eq(storyUrl);
   });
 
-  it('renders RAW HTML 😱', () => {
-    const subject = shallow({ propsData: { text: '<p>html</p>' }});
-    expect(subject.find('.Story-text').text()).to.eq('html');
+  it('renders sanitized HTML 😱', () => {
+    const html = '<p>html <b>bold</b> <script>no script</script></p>';
+    const subject = shallow({ propsData: { text: html }});
+    expect(subject.find('.Story-text').text()).to.eq('html bold no-script');
   });
+
 
   it('renders an end-of-story marker', () => {
     const subject = shallow();
