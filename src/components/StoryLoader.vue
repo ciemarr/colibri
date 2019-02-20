@@ -9,6 +9,7 @@
       v-bind:title="title"
       v-bind:author="author"
       v-bind:text="text"
+      v-bind:storyUrl="storyUrl"
      />
 
     <p v-if="'failed' === loadingStatus">
@@ -19,8 +20,6 @@
       <p>Add the story's URL to the address bar!</p>
       <pre>{{ baseUrl }}/?url=https://example.com/url/of/a/story/to/load</pre>
     </div>
-
-    <pre>{{ storyUrl }}</pre>
   </div>
 </template>
 

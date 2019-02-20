@@ -1,9 +1,12 @@
 <template>
   <div class="Story" v-resize.initial="onResize">
 
-    <div class="Story-metadata">
-      <span class="Story-title">{{ title }}</span>
-      <span class="Story-author">{{ author }}</span>
+    <div class="Story-metadata" v-if="title && author">
+        <span class="Story-title">{{ title }}</span>
+        <span class="Story-author">{{ author }}</span>
+    </div>
+    <div class="Story-metadata" v-else>
+        <span class="Story-url">{{ storyUrl }}</span>
     </div>
 
     <div class="Story-text-container" ref="storyTextContainer">
@@ -38,6 +41,7 @@ export default class Story extends Vue {
   @Prop() public readonly text!: string;
   @Prop() public readonly title!: string;
   @Prop() public readonly author!: string;
+  @Prop() public readonly storyUrl!: string;
 
   private DEFAULT_LINE_HEIGHT = '16px';
 
@@ -101,6 +105,11 @@ export default class Story extends Vue {
 
 .Story-author {
   font-style: italic;
+}
+
+.Story-url {
+  font-family: monospace;
+  margin: 0 auto;
 }
 
 .Story-text-container {

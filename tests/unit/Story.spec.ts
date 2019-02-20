@@ -18,6 +18,12 @@ describe('Story', () => {
     expect(subject.find('.Story-author').text()).to.equal(author);
   });
 
+  it('shows story url if there is no author or title', () => {
+    const storyUrl = 'http://example.com/story/42';
+    const subject = shallow({ propsData: { storyUrl, title: null, author: null }});
+    expect(subject.find('.Story-metadata').text()).to.eq(storyUrl);
+  });
+
   it('renders an end-of-story marker', () => {
     const subject = shallow();
     expect(subject.find('.Story-fin')).to.exist;
@@ -88,14 +94,18 @@ describe('Story', () => {
   function shallow(optionalProps: any = {}) {
     const props: any = {};
 
-    props.propsData = optionalProps.propsData || {};
-    props.propsData.author = props.propsData.author || 'myAuthor';
-    props.propsData.title = props.propsData.title || 'myTitle';
-    props.propsData.text = props.propsData.text || 'myText';
+    props.propsData = defaultValue(optionalProps.propsData, {});
+    props.propsData.author = defaultValue(props.propsData.author, 'myAuthor');
+    props.propsData.title = defaultValue(props.propsData.title, 'myTitle');
+    props.propsData.text = defaultValue(props.propsData.text, 'myText');
 
-    props.directives = optionalProps.directives || {};
-    props.directives.resize = props.directives.resize || {};
+    props.directives = defaultValue(optionalProps.directives, {});
+    props.directives.resize = defaultValue(props.directives.resize, {});
 
     return shallowMount(Story, props);
+  }
+
+  function defaultValue(variable: any, value: any): any {
+    return (typeof variable === 'undefined') ? value : variable;
   }
 });
