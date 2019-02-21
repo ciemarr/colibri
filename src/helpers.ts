@@ -1,4 +1,12 @@
 import Vue from 'vue';
+
+////////////////////////////////////////////////////////////////////////
+
+import vueHeadful from 'vue-headful';
+Vue.component('vue-headful', vueHeadful);
+
+////////////////////////////////////////////////////////////////////////
+
 import sanitizeHtml from 'sanitize-html';
 
 const sanitizeHtmlPlugin = {
@@ -14,6 +22,7 @@ const sanitizeHtmlPlugin = {
 
 Vue.use(sanitizeHtmlPlugin);
 
+////////////////////////////////////////////////////////////////////////
 
 export function getStorage(): Storage {
   if (typeof localStorage !== 'undefined') {

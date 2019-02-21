@@ -4,9 +4,11 @@
     <div class="Story-metadata" v-if="title && author">
         <span class="Story-title">{{ title }}</span>
         <span class="Story-author">{{ author }}</span>
+        <vue-headful :title="title" />
     </div>
     <div class="Story-metadata" v-else>
         <span class="Story-url">{{ storyUrl }}</span>
+        <vue-headful :title="storyUrl" />
     </div>
 
     <div class="Story-text-container" ref="storyTextContainer">
