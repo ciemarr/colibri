@@ -18,8 +18,10 @@
 
     <div class="Story-pages-container">
       <span class="Story-pages">
+        page
+        <span class="Story-pages-current">{{ currentPage }}</span>
+        of
         <span class="Story-pages-total">{{ totalPages }}</span>
-        pages
       </span>
     </div>
 
@@ -60,8 +62,25 @@ export default class Story extends Vue {
     return integerPages + maybeExtraPage;
   }
 
+  public calculateCurrentPage(scrollPosition: number, scrollHeight: number): number {
+    const currentPage = scrollPosition / scrollHeight * this.totalPages;
+    return Math.floor(currentPage) + 1;
+  }
+
+  private beforeMount() {
+    window.addEventListener('scroll', this.onScroll);
+  }
+
+  private beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
   private onResize(): void {
     this.updateTotalPages();
+  }
+
+  private onScroll(e: Event): void {
+    this.updateCurrentPage();
   }
 
   private updateTotalPages(): void {
@@ -76,6 +95,12 @@ export default class Story extends Vue {
     );
 
     this.totalPages = totalPages;
+  }
+
+  private updateCurrentPage(): void {
+    this.currentPage = this.calculateCurrentPage(
+      window.scrollY, this.$el.scrollHeight
+    );
   }
 }
 </script>

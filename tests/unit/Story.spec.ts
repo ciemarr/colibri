@@ -30,7 +30,6 @@ describe('Story', () => {
     expect(subject.find('.Story-text').text()).to.eq('html bold');
   });
 
-
   it('renders an end-of-story marker', () => {
     const subject = shallow();
     expect(subject.find('.Story-fin')).to.exist;
@@ -95,7 +94,41 @@ describe('Story', () => {
 
       expect(pages).to.eq(2);
     });
+  });
 
+  describe('calculates current page', () => {
+    let story: Story;
+
+    beforeEach(() => {
+      const subject = shallow();
+      story = subject.vm;
+      story.totalPages = 10;
+    });
+
+    it('when at the top of the window', () => {
+      const page = story.calculateCurrentPage(0, 100);
+      expect(page).to.eq(1);
+    });
+
+    it('when at the bottom of the window', () => {
+      const page = story.calculateCurrentPage(100, 100);
+      expect(page).to.eq(10);
+    });
+
+    it('when on the first page', () => {
+      const page = story.calculateCurrentPage(5, 100);
+      expect(page).to.eq(1);
+    });
+
+    it('when on a middle page', () => {
+      const page = story.calculateCurrentPage(55, 100);
+      expect(page).to.eq(5);
+    });
+
+    it('when on the last page', () => {
+      const page = story.calculateCurrentPage(95, 100);
+      expect(page).to.eq(10);
+    });
   });
 
   function shallow(optionalProps: any = {}) {
@@ -105,6 +138,7 @@ describe('Story', () => {
     props.propsData.author = defaultValue(props.propsData.author, 'myAuthor');
     props.propsData.title = defaultValue(props.propsData.title, 'myTitle');
     props.propsData.text = defaultValue(props.propsData.text, 'myText');
+    props.propsData.storyUrl = defaultValue(props.propsData.storyUrl, 'http://example.com');
 
     props.directives = defaultValue(optionalProps.directives, {});
     props.directives.resize = defaultValue(props.directives.resize, {});
