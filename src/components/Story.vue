@@ -181,7 +181,8 @@ export default class Story extends Vue {
 .Story-text {
   max-width: 27rem;
   margin: 0 auto;
-  line-height: 1em;
+  line-height: 1.3em;
+  font-size: large;
 }
 
 .Story-pages-container {
