@@ -6,11 +6,12 @@ import Story from '@/components/Story.vue';
 
 describe('StoryLoader', () => {
   it('loads a story by URL', async () => {
-    const storyUrl = 'http://www.example.com/story/42';
     const data = 'Hello, world!';
+    const storyUrl = 'http://www.example.com/story/42';
+    const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
 
     const axios = {
-      get: sinon.stub().withArgs(storyUrl).returns(Promise.resolve({data}))
+      get: sinon.stub().withArgs(proxiedUrl).returns(Promise.resolve({data}))
     };
 
     const subject = shallowMount(StoryLoader, {
@@ -20,7 +21,7 @@ describe('StoryLoader', () => {
 
     const story = subject.find(Story).vm as Story;
     expect(story.text).to.eq(data);
-    expect(axios.get).to.have.been.calledOnceWith(storyUrl);
+    expect(axios.get).to.have.been.calledOnceWith(proxiedUrl);
   });
 
   it('shows a loading indicator', async () => {

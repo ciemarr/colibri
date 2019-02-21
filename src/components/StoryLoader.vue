@@ -36,6 +36,8 @@ import { getStorage } from '@/helpers';
   }
 })
 export default class StoryLoader extends Vue {
+  public static readonly PROXY_URL: string = 'https://cors-anywhere.herokuapp.com';
+
   public title: string | null = null;
   public author: string | null = null;
   public text: string | null = null;
@@ -66,7 +68,8 @@ export default class StoryLoader extends Vue {
     }
 
     try {
-      const response = await this.axios.get(this.storyUrl);
+      const proxiedUrl = `${StoryLoader.PROXY_URL}/${this.storyUrl}`;
+      const response = await this.axios.get(proxiedUrl);
       this.updateStoryText(response.data);
     } catch (error) {
       this.loadingStatus = 'failed';
