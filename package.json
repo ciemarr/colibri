@@ -12,29 +12,24 @@
     "start": "node src/server.js",
     "mocha-webpack": "mocha-webpack --webpack-config node_modules/@vue/cli-service/webpack.config.js --require tests/setup.js tests/**/*.spec.ts",
     "coverage": "nyc vue-cli-service test:unit --include tests/setup.js",
-    "coveralls": "yarn run coverage && nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc vue-cli-service test:unit --include tests/setup.js && nyc report --reporter=text-lcov | coveralls"
   },
   "heroku-run-build-script": true,
   "nyc": {
+    "register": "babel-register",
     "include": [
-      "src/*.ts",
-      "src/*.vue",
-      "src/**/*.ts",
-      "src/**/*.vue"
-    ],
-    "exclude": [
-      "node_modules/**/*"
+      "src/*.{ts,vue}",
+      "src/**/*.{ts,vue}"
     ],
     "reporter": [
       "lcov",
       "text",
       "text-summary"
     ],
+    "all": true,
     "per-file": true,
-    "instrument": false,
-    "sourceMap": false,
-    "cache": true,
-    "all": true
+    "instrument": true,
+    "sourceMap": false
   },
   "dependencies": {
     "@types/sanitize-html": "^1.18.2",
