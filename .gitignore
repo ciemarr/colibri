@@ -1,8 +1,12 @@
+.coveralls.yml
+
 dist/
 
 node_modules/
 
 cypress/screenshots
 cypress/videos
+coverage/
+.nyc_output
 
 .vscode

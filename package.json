@@ -10,9 +10,32 @@
     "test:unit": "vue-cli-service test:unit --include tests/setup.js",
     "test:integration": "yarn run cypress run",
     "start": "node src/server.js",
-    "mocha-webpack": "mocha-webpack --webpack-config node_modules/@vue/cli-service/webpack.config.js --require tests/setup.js tests/**/*.spec.ts"
+    "mocha-webpack": "mocha-webpack --webpack-config node_modules/@vue/cli-service/webpack.config.js --require tests/setup.js tests/**/*.spec.ts",
+    "coverage": "nyc vue-cli-service test:unit --include tests/setup.js",
+    "coveralls": "yarn run coverage && nyc report --reporter=text-lcov | coveralls"
   },
   "heroku-run-build-script": true,
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/*.vue",
+      "src/**/*.ts",
+      "src/**/*.vue"
+    ],
+    "exclude": [
+      "node_modules/**/*"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "per-file": true,
+    "instrument": false,
+    "sourceMap": false,
+    "cache": true,
+    "all": true
+  },
   "dependencies": {
     "@types/sanitize-html": "^1.18.2",
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -37,12 +60,17 @@
     "@types/chai": "^4.1.0",
     "@types/mocha": "^5.2.4",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.1.2",
+    "coveralls": "^3.0.2",
     "cypress": "^3.1.5",
     "express": "^4.16.4",
     "fibers": "^3.1.1",
     "http-server": "^0.11.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
     "lint-staged": "^8.1.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^13.3.0",
     "sass": "^1.16.0",
     "sinon": "^7.2.4",
     "sinon-chai": "^3.3.0",
