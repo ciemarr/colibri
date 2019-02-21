@@ -32,6 +32,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import resize from 'vue-resize-directive';
+import { getStorage } from '@/helpers';
 
 @Component({
   directives: { resize }
@@ -45,7 +46,14 @@ export default class Story extends Vue {
   @Prop() public readonly author!: string;
   @Prop() public readonly storyUrl!: string;
 
+  private readonly storage: Storage;
+
   private DEFAULT_LINE_HEIGHT = '16px';
+
+  constructor() {
+    super();
+    this.storage = getStorage();
+  }
 
   public calculateTotalPages(
     visibleHeight: number,
@@ -79,11 +87,7 @@ export default class Story extends Vue {
   }
 
   private mounted() {
-    if (!localStorage) {
-      return;
-    }
-
-    const savedScrollPosition = localStorage.getItem('currentScrollPosition');
+    const savedScrollPosition = this.storage.getItem('currentScrollPosition');
     if (savedScrollPosition) {
       const position = parseInt(savedScrollPosition, 10);
       const options: ScrollToOptions = { top: position };
@@ -121,11 +125,7 @@ export default class Story extends Vue {
   }
 
   private saveCurrentScrollPosition(): void {
-    if (!localStorage) {
-      return;
-    }
-
-    localStorage.setItem('currentScrollPosition', window.scrollY.toString());
+    this.storage.setItem('currentScrollPosition', window.scrollY.toString());
   }
 }
 </script>

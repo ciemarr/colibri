@@ -28,6 +28,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { AxiosInstance } from 'axios';
 import Story from '@/components/Story.vue';
+import { getStorage } from '@/helpers';
 
 @Component({
   components: {
@@ -38,15 +39,18 @@ export default class StoryLoader extends Vue {
   public title: string | null = null;
   public author: string | null = null;
   public text: string | null = null;
+
   private loadingStatus: 'loading' | 'succeeded' | 'failed' | 'no-url';
   private baseUrl: string = window.location.origin;
+  private readonly storage: Storage;
 
-  @Prop() private storyUrl!: string;
-  @Prop() private axios!: AxiosInstance;
+  @Prop() private readonly storyUrl!: string;
+  @Prop() private readonly axios!: AxiosInstance;
 
   constructor() {
     super();
     this.loadingStatus = this.storyUrl ? 'loading' : 'no-url';
+    this.storage = getStorage();
   }
 
   private async created() {
@@ -55,12 +59,10 @@ export default class StoryLoader extends Vue {
       return;
     }
 
-    if (localStorage) {
-      const savedStoryText = localStorage.getItem(this.storyUrl);
-      if (savedStoryText) {
-        this.updateStoryText(savedStoryText);
-        return;
-      }
+    const savedStoryText = this.storage.getItem(this.storyUrl);
+    if (savedStoryText) {
+      this.updateStoryText(savedStoryText);
+      return;
     }
 
     try {
@@ -74,9 +76,7 @@ export default class StoryLoader extends Vue {
   private updateStoryText(storyText: string): void {
     this.text = storyText;
     this.loadingStatus = 'succeeded';
-    if (localStorage) {
-      localStorage.setItem(this.storyUrl, storyText);
-    }
+    this.storage.setItem(this.storyUrl, storyText);
   }
 
   private gibberish(len: number): string {
