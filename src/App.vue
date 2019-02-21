@@ -16,5 +16,7 @@ export default {
 html, body {
   padding: 0;
   margin: 0;
+  color: white;
+  background-color: black;
 }
 </style>

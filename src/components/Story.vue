@@ -144,7 +144,7 @@ export default class Story extends Vue {
 }
 
 %Story-header-footer {
-  background-color: #ccc;
+  background-color: #333;
   padding: 1em;
   display: flex;
 }
@@ -170,14 +170,16 @@ export default class Story extends Vue {
 .Story-text-container {
   flex-grow: 1;
   padding: 0.5rem 1rem;
+  /*
   background: linear-gradient(
     to bottom,
-    #fbf6ed,
-    #fbf6ed 50%,
-    #efefef 50%,
-    #efefef
+    #fbf6ed20,
+    #fbf6ed20 50%,
+    #efefef40 50%,
+    #efefef40
   );
   background-size: 100% calc(2 * (100vh - 2rem));
+  */
 }
 
 .Story-text {
