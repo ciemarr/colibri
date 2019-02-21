@@ -32,6 +32,7 @@
     "sourceMap": false
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
     "@types/sanitize-html": "^1.18.2",
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-pwa": "^3.4.0",
@@ -40,6 +41,7 @@
     "@vue/cli-service": "^3.4.0",
     "axios": "^0.18.0",
     "connect-history-api-fallback": "^1.6.0",
+    "morgan": "^1.9.1",
     "register-service-worker": "^1.5.2",
     "sanitize-html": "^1.20.0",
     "sass-loader": "^7.1.0",
