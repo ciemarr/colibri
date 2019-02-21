@@ -63,8 +63,11 @@ export default class Story extends Vue {
   }
 
   public calculateCurrentPage(scrollPosition: number, scrollHeight: number): number {
-    const currentPage = scrollPosition / scrollHeight * this.totalPages;
-    return Math.min(Math.floor(currentPage) + 1, this.totalPages);
+    const pageSize = scrollHeight / this.totalPages;
+    const adjustedScrollPosition = scrollPosition + (pageSize / 2);
+    const floatCurrentPage = adjustedScrollPosition / scrollHeight * this.totalPages;
+    const integerCurrentPage = Math.floor(floatCurrentPage) + 1;
+    return Math.min(Math.max(1, integerCurrentPage), this.totalPages);
   }
 
   private beforeMount() {
@@ -75,12 +78,22 @@ export default class Story extends Vue {
     window.removeEventListener('scroll', this.onScroll);
   }
 
+  private mounted() {
+    const savedScrollPosition = localStorage.getItem('currentScrollPosition');
+    if (savedScrollPosition) {
+      const position = parseInt(savedScrollPosition, 10);
+      const options: ScrollToOptions = { top: position };
+      window.scrollTo(options);
+    }
+  }
+
   private onResize(): void {
     this.updateTotalPages();
   }
 
   private onScroll(e: Event): void {
     this.updateCurrentPage();
+    this.saveCurrentScrollPosition();
   }
 
   private updateTotalPages(): void {
@@ -101,6 +114,10 @@ export default class Story extends Vue {
     this.currentPage = this.calculateCurrentPage(
       window.scrollY, this.$el.scrollHeight
     );
+  }
+
+  private saveCurrentScrollPosition(): void {
+    localStorage.setItem('currentScrollPosition', window.scrollY.toString());
   }
 }
 </script>
@@ -140,6 +157,14 @@ export default class Story extends Vue {
 .Story-text-container {
   flex-grow: 1;
   padding: 0.5rem 1rem;
+  background: linear-gradient(
+    to bottom,
+    #fbf6ed,
+    #fbf6ed 50%,
+    #efefef 50%,
+    #efefef
+  );
+  background-size: 100% calc(2 * (100vh - 2rem));
 }
 
 .Story-text {

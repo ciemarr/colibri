@@ -98,36 +98,77 @@ describe('Story', () => {
 
   describe('calculates current page', () => {
     let story: Story;
+    const totalPages = 5;
+    const totalHeight = 25;
 
     beforeEach(() => {
       const subject = shallow();
       story = subject.vm;
-      story.totalPages = 10;
+      story.totalPages = totalPages;
     });
 
+    /*
+
+    0    5   10   15   20   25     pixels
+    |----|----|----|----|----|     scroll position (vertical in real life)
+       1    2    3    4    5       page
+
+     0.0 to  2.5 px = page 1
+     2.5 to  7.5 px = page 2 (becomes "next page" when halfway thru prev page)
+     7.5 to 12.5 px = page 3
+    12.5 to 17.5 px = page 4
+    17.5 to 22.5 px = page 5
+    22.5 to 25.0 px = page 5 (still last page at the very end)
+
+    */
+
     it('when at the top of the window', () => {
-      const page = story.calculateCurrentPage(0, 100);
+      const page = story.calculateCurrentPage(0, totalHeight);
       expect(page).to.eq(1);
     });
 
     it('when at the bottom of the window', () => {
-      const page = story.calculateCurrentPage(100, 100);
-      expect(page).to.eq(10);
+      const page = story.calculateCurrentPage(totalHeight, totalHeight);
+      expect(page).to.eq(totalPages);
     });
 
-    it('when on the first page', () => {
-      const page = story.calculateCurrentPage(5, 100);
+    it('when on the first half of the first page', () => {
+      const page = story.calculateCurrentPage(2.49, totalHeight);
       expect(page).to.eq(1);
     });
 
-    it('when on a middle page', () => {
-      const page = story.calculateCurrentPage(55, 100);
-      expect(page).to.eq(6);
+    it('when on the second half of the first page', () => {
+      const page = story.calculateCurrentPage(2.5, totalHeight);
+      expect(page).to.eq(2);
     });
 
-    it('when on the last page', () => {
-      const page = story.calculateCurrentPage(95, 100);
-      expect(page).to.eq(10);
+    it('when on the first half of a middle page', () => {
+      const page = story.calculateCurrentPage(7.5, totalHeight);
+      expect(page).to.eq(3);
+    });
+
+    it('when on the second half of a middle page', () => {
+      const page = story.calculateCurrentPage(12.49, totalHeight);
+      expect(page).to.eq(3);
+    });
+
+    it('when on the second half of the second-to-last page', () => {
+      const page = story.calculateCurrentPage(17.49, totalHeight);
+      expect(page).to.eq(totalPages - 1);
+    });
+
+    it('when on the first half of the last page', () => {
+      const page = story.calculateCurrentPage(17.5, totalHeight);
+      expect(page).to.eq(totalPages);
+    });
+    it('when on the second half of the last page', () => {
+      const page = story.calculateCurrentPage(22.49, totalHeight);
+      expect(page).to.eq(totalPages);
+    });
+
+    it('when on the end of the last page', () => {
+      const page = story.calculateCurrentPage(22.5, totalHeight);
+      expect(page).to.eq(totalPages);
     });
   });
 
