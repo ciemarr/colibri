@@ -55,17 +55,24 @@ export default class StoryLoader extends Vue {
       return;
     }
 
-    if (!this.axios) {
+    const savedStoryText = localStorage.getItem(this.storyUrl);
+    if (savedStoryText) {
+      this.updateStoryText(savedStoryText);
       return;
     }
 
     try {
       const response = await this.axios.get(this.storyUrl);
-      this.text = response.data;
-      this.loadingStatus = 'succeeded';
+      this.updateStoryText(response.data);
     } catch (error) {
       this.loadingStatus = 'failed';
     }
+  }
+
+  private updateStoryText(storyText: string): void {
+    this.text = storyText;
+    this.loadingStatus = 'succeeded';
+    localStorage.setItem(this.storyUrl, storyText);
   }
 
   private gibberish(len: number): string {
