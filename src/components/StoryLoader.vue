@@ -55,10 +55,12 @@ export default class StoryLoader extends Vue {
       return;
     }
 
-    const savedStoryText = localStorage.getItem(this.storyUrl);
-    if (savedStoryText) {
-      this.updateStoryText(savedStoryText);
-      return;
+    if (localStorage) {
+      const savedStoryText = localStorage.getItem(this.storyUrl);
+      if (savedStoryText) {
+        this.updateStoryText(savedStoryText);
+        return;
+      }
     }
 
     try {
@@ -72,7 +74,9 @@ export default class StoryLoader extends Vue {
   private updateStoryText(storyText: string): void {
     this.text = storyText;
     this.loadingStatus = 'succeeded';
-    localStorage.setItem(this.storyUrl, storyText);
+    if (localStorage) {
+      localStorage.setItem(this.storyUrl, storyText);
+    }
   }
 
   private gibberish(len: number): string {

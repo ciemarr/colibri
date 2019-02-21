@@ -79,6 +79,10 @@ export default class Story extends Vue {
   }
 
   private mounted() {
+    if (!localStorage) {
+      return;
+    }
+
     const savedScrollPosition = localStorage.getItem('currentScrollPosition');
     if (savedScrollPosition) {
       const position = parseInt(savedScrollPosition, 10);
@@ -117,6 +121,10 @@ export default class Story extends Vue {
   }
 
   private saveCurrentScrollPosition(): void {
+    if (!localStorage) {
+      return;
+    }
+
     localStorage.setItem('currentScrollPosition', window.scrollY.toString());
   }
 }
