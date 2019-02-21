@@ -87,7 +87,7 @@ export default class Story extends Vue {
   }
 
   private mounted() {
-    const savedScrollPosition = this.storage.getItem('currentScrollPosition');
+    const savedScrollPosition = this.storage.getItem(`currentScrollPosition-${this.storyUrl}`);
     if (savedScrollPosition) {
       const position = parseInt(savedScrollPosition, 10);
       const options: ScrollToOptions = { top: position };
@@ -125,7 +125,10 @@ export default class Story extends Vue {
   }
 
   private saveCurrentScrollPosition(): void {
-    this.storage.setItem('currentScrollPosition', window.scrollY.toString());
+    this.storage.setItem(
+      `currentScrollPosition-${this.storyUrl}`,
+      window.scrollY.toString()
+    );
   }
 }
 </script>
