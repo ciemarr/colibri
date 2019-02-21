@@ -4,13 +4,13 @@ const history = require('connect-history-api-fallback');
 const port = process.env.PORT || 80;
 console.log('Colibri configured for port ' + port);
 
-const app = express();
+const expressServer = express();
 
 const staticFileMiddleware = express.static('dist');
-app.use(staticFileMiddleware); // 1st call for unredirected requests
-app.use(history({ index: '/dist/index.html' }));
-app.use(staticFileMiddleware); // 2nd call for redirected requests
+expressServer.use(staticFileMiddleware); // 1st call for unredirected requests
+expressServer.use(history({ index: '/dist/index.html' }));
+expressServer.use(staticFileMiddleware); // 2nd call for redirected requests
 
-app.listen(port, function() {
+expressServer.listen(port, function() {
   console.log('Starting Colibri on port ' + port);
 });
