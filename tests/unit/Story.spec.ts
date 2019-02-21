@@ -122,7 +122,7 @@ describe('Story', () => {
 
     it('when on a middle page', () => {
       const page = story.calculateCurrentPage(55, 100);
-      expect(page).to.eq(5);
+      expect(page).to.eq(6);
     });
 
     it('when on the last page', () => {

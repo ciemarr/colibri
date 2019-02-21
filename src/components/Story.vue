@@ -64,7 +64,7 @@ export default class Story extends Vue {
 
   public calculateCurrentPage(scrollPosition: number, scrollHeight: number): number {
     const currentPage = scrollPosition / scrollHeight * this.totalPages;
-    return Math.floor(currentPage) + 1;
+    return Math.min(Math.floor(currentPage) + 1, this.totalPages);
   }
 
   private beforeMount() {
