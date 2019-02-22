@@ -17,7 +17,8 @@ cache:
     - "~/.cache"
 
 before_script:
-  - yarn serve &
+  - yarn run build
+  - PORT=8080 NODE_ENV=test yarn run start &
 
 after_success:
   - yarn run coveralls

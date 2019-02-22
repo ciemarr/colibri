@@ -18,7 +18,7 @@
 
     <div v-if="'no-url' === loadingStatus">
       <p>Add the story's URL to the address bar!</p>
-      <pre>{{ baseUrl }}/?url=https://example.com/url/of/a/story/to/load</pre>
+      <pre>{{ baseUrl }}/story/<b>https://example.com/url/of/a/story/to/load</b></pre>
     </div>
   </div>
 </template>

@@ -38,7 +38,7 @@ describe('StoryLoader', () => {
 
   it('shows instructions when no story URL is given', () => {
     const subject = shallowMount(StoryLoader);
-    const expectedMsg = 'http://localhost/?url=https://example.com/url/of/a/story/to/load';
+    const expectedMsg = 'http://localhost/story/https://example.com/url/of/a/story/to/load';
     expect(subject.find('.StoryLoader').text()).to.contain(expectedMsg);
   });
 

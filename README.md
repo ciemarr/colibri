@@ -4,35 +4,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/ciemarr/colibri/badge.svg?branch=master)](https://coveralls.io/github/ciemarr/colibri?branch=master)
 [![Build Status](https://travis-ci.org/ciemarr/colibri.svg?branch=master)](https://travis-ci.org/ciemarr/colibri)
 
-## Project setup
+## Development
 ```
 yarn install
+yarn run build
+yarn run start
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
+## Testing
 ```
 yarn run build
-```
-
-### Run your tests
-```
+PORT=8080 yarn run start &
 yarn run test
 ```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
