@@ -1,16 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { mount, shallow } from 'enzyme';
+import { expect } from 'chai';
 import Story from './Story';
 
 describe('Story', () => {
-  describe('renders', () => {
-    it('basic story data', () => {
-      const div = document.createElement('div');
-      ReactDOM.render(<Story text='Hello, world!' />, div);
-      ReactDOM.unmountComponentAtNode(div);
+  describe('sanity check', () => {
+    it('shallowRender', () => {
+      shallow(<Story text='Hello, world!' url='myUrl' />);
     });
 
-    xit('header shows story url when author & title are missing', () => {});
+    it('mountRender', () => {
+      mount(<Story text='Hello, world!' url='myUrl' />);
+    });
+  });
+
+  describe('renders', () => {
+    it('basic story data', () => {
+      const subject = shallow(
+        <Story text='myText' title='myTitle' author='myAuthor' url='myUrl' />
+      );
+
+      expect(subject.find('.Story-text').text()).to.equal('myText');
+      expect(subject.find('.Story-title').text()).to.equal('myTitle');
+      expect(subject.find('.Story-author').text()).to.equal('myAuthor');
+      expect(subject.find('.Story-url').length).to.equal(0);
+    });
+
+    it('header shows story url when author & title are missing', () => {
+      const subject = shallow(<Story text='myText' url='myUrl' />);
+
+      expect(subject.find('.Story-url').text()).to.equal('myUrl');
+      expect(subject.find('.Story-title').length).to.equal(0);
+      expect(subject.find('.Story-author').length).to.equal(0);
+    });
+
     xit('text is sanitized HTML', () => {});
     xit('end-of-story marker', () => {});
   });
