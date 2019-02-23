@@ -9,6 +9,7 @@
     "test:unit": "react-scripts test",
     "test:integration": "cypress run",
     "test:coverage": "react-scripts test --coverage",
+    "coveralls": "react-scripts test --env=jsdom --coverage && cat coverage/lcov.info | coveralls",
     "lint": "tslint --fix --config tslint.json 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "browserslist": [
@@ -17,6 +18,7 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "heroku-run-build-script": true,
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -40,6 +42,7 @@
     "@types/chai": "^4.1.7",
     "@types/enzyme": "^3.9.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
     "cypress": "^3.1.5",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
