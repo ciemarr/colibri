@@ -16,7 +16,10 @@ describe('StoryLoader', () => {
 
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
 
+    subject.find('.StoryLoader-title').setValue('A Greeting');
+    subject.find('.StoryLoader-author').setValue('CS Tradition');
     subject.find('.StoryLoader-url').setValue(storyUrl);
+
     subject.find('.StoryLoader-read-button').trigger('click');
 
     await subject.vm.$nextTick();
@@ -25,6 +28,8 @@ describe('StoryLoader', () => {
     const story = subject.find(Story).vm as Story;
 
     expect(storyLoader.loadingStatus).to.eq('succeeded');
+    expect(story.title).to.eq('A Greeting');
+    expect(story.author).to.eq('CS Tradition');
     expect(story.text).to.eq(data);
     expect(axios.get).to.have.been.calledOnceWith(proxiedUrl);
   });

@@ -10,6 +10,8 @@
 
     <div v-if="'no-url' === loadingStatus">
       <input class="StoryLoader-url" v-model="storyUrl" placeholder="story URL" type="text" />
+      <input class="StoryLoader-title" v-model="title" placeholder="story title" type="text" />
+      <input class="StoryLoader-author" v-model="author" placeholder="story author" type="text" />
       <button class="StoryLoader-read-button" @click="onReadButtonClick">
         Read Story
       </button>
@@ -81,7 +83,10 @@ export default class StoryLoader extends Vue {
 
     this.text = storyText;
     this.loadingStatus = 'succeeded';
-    this.storage.setItem(this.storyUrl, storyText);
+
+    if (this.storyUrl) {
+      this.storage.setItem(this.storyUrl, storyText);
+    }
   }
 }
 </script>
