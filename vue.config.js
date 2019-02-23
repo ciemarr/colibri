@@ -2,7 +2,13 @@ const path = require('path')
 
 module.exports = {
   lintOnSave: false,
+
   chainWebpack: config => {
+    config.watchOptions = {
+      aggregateTimeout: 5000,
+      ignored: [/node_modules/],
+    };
+
     if (process.env.NODE_ENV !== 'production') {
       config.devtool('eval');
     }

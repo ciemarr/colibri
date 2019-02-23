@@ -5,7 +5,7 @@ import StoryLoader from '@/components/StoryLoader.vue';
 import Story from '@/components/Story.vue';
 
 describe('StoryLoader', () => {
-  it('loads a story by URL', async () => {
+  it('loads a story', async () => {
     const data = 'Hello, world!';
     const storyUrl = 'http://www.example.com/story/42';
     const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
@@ -14,32 +14,45 @@ describe('StoryLoader', () => {
       get: sinon.stub().withArgs(proxiedUrl).returns(Promise.resolve({data}))
     };
 
-    const subject = shallowMount(StoryLoader, {
-      propsData: { storyUrl, axios },
-    });
+    const subject = shallowMount(StoryLoader, { propsData: { axios } });
+
+    subject.find('.StoryLoader-url').setValue(storyUrl);
+    subject.find('.StoryLoader-read-button').trigger('click');
+
     await subject.vm.$nextTick();
 
+    const storyLoader = subject.vm as StoryLoader;
     const story = subject.find(Story).vm as Story;
+
+    expect(storyLoader.loadingStatus).to.eq('succeeded');
     expect(story.text).to.eq(data);
     expect(axios.get).to.have.been.calledOnceWith(proxiedUrl);
   });
 
-  it('shows a loading indicator', async () => {
+  it('shows a loading indicator', () => {
     const axios = {
       get: sinon.stub().returns(new Promise(() => {}))
     };
 
-    const subject = shallowMount(StoryLoader,
-      { propsData: { axios, storyUrl: 'some-url' } });
-    await subject.vm.$nextTick();
+    const subject = shallowMount(StoryLoader, { propsData: { axios } });
 
-    expect(subject.find('.StoryLoader').text()).to.contain('Loading...');
+    subject.find('.StoryLoader-read-button').trigger('click');
+
+    const storyLoader = subject.vm as StoryLoader;
+    expect(storyLoader.loadingStatus).to.eq('loading');
   });
 
-  it('shows instructions when no story URL is given', () => {
-    const subject = shallowMount(StoryLoader);
-    const expectedMsg = 'http://localhost/story/https://example.com/url/of/a/story/to/load';
-    expect(subject.find('.StoryLoader').text()).to.contain(expectedMsg);
+  it('disables "Read Story" button if there is no story URL', () => {
+    const axios = {
+      get: sinon.stub().returns(new Promise(() => {}))
+    };
+
+    const subject = shallowMount(StoryLoader, { propsData: { axios } });
+
+    subject.find('.StoryLoader-read-button').trigger('click');
+
+    const storyLoader = subject.vm as StoryLoader;
+    expect(storyLoader.loadingStatus).to.eq('no-url');
   });
 
   /*
@@ -49,9 +62,11 @@ describe('StoryLoader', () => {
     };
 
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
-    await subject.vm.$nextTick();
 
-    expect(subject.find('.StoryLoader').text()).to.contain('Failed to load.');
+    subject.find('.StoryLoader-read-button').trigger('click');
+
+    const storyLoader = subject.vm as StoryLoader;
+    expect(storyLoader.loadingStatus).to.eq('failed');
   });
   */
 });

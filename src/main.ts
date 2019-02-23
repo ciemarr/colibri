@@ -15,12 +15,9 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/story/:url(.*)',
+      path: '/story',
       component: StoryLoader,
-      props: (route) => ({
-        storyUrl: route.params.url,
-        axios: axios,
-      }),
+      props: (route) => ({ axios }),
     },
   ],
 });

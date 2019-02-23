@@ -12,11 +12,18 @@
   "rules": {
     "indent": [true, "spaces", 2],
     "interface-name": false,
+    "member-ordering": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
     "only-arrow-functions": false,
     "ordered-imports": false,
-    "quotemark": [true, "single"],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double",
+      "avoid-template",
+      "avoid-escape"
+    ]
     "semicolon": true,
     "trailing-comma": [
       true,
@@ -31,13 +38,6 @@
       "ban-keywords",
       "check-format",
       "allow-leading-underscore"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "jsx-double",
-      "avoid-template",
-      "avoid-escape"
     ]
   }
 }
