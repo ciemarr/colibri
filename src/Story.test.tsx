@@ -6,18 +6,18 @@ import Story from './Story';
 describe('Story', () => {
   describe('sanity check', () => {
     it('shallowRender', () => {
-      shallow(<Story text='Hello, world!' url='myUrl' />);
+      shallow(<Story text="Hello, world!" url="myUrl" />);
     });
 
     it('mountRender', () => {
-      mount(<Story text='Hello, world!' url='myUrl' />);
+      mount(<Story text="Hello, world!" url="myUrl" />);
     });
   });
 
   describe('renders', () => {
     it('basic story data', () => {
       const subject = shallow(
-        <Story text='myText' title='myTitle' author='myAuthor' url='myUrl' />
+        <Story text="myText" title="myTitle" author="myAuthor" url="myUrl" />
       );
 
       expect(subject.find('.Story-text').text()).to.equal('myText');
@@ -27,13 +27,14 @@ describe('Story', () => {
     });
 
     it('header shows story url when author & title are missing', () => {
-      const subject = shallow(<Story text='myText' url='myUrl' />);
+      const subject = shallow(<Story text="myText" url="myUrl" />);
 
       expect(subject.find('.Story-url').text()).to.equal('myUrl');
       expect(subject.find('.Story-title').length).to.equal(0);
       expect(subject.find('.Story-author').length).to.equal(0);
     });
 
+    // tslint:disable: no-empty
     xit('text is sanitized HTML', () => {});
     xit('end-of-story marker', () => {});
   });
@@ -58,5 +59,6 @@ describe('Story', () => {
     xit('when on the first half of the last page', () => {});
     xit('when on the second half of the last page', () => {});
     xit('when on the end of the last page', () => {});
+    // tslint:enable: no-empty
   });
 });

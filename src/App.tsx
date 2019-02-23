@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Story from './Story';
 
 class App extends Component {
-  render() {
+  public render() {
     return (
       <div className="App">
         <Story
@@ -10,7 +10,7 @@ class App extends Component {
           title="A Greeting"
           author="CS Tradition"
           url="https://www.example.com"
-         />
+        />
       </div>
     );
   }

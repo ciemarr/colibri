@@ -1,15 +1,15 @@
 import React, { Component, ReactNode } from 'react';
 import './Story.scss';
 
-type Props = {
-  text: string,
-  title?: string,
-  author?: string,
-  url: string,
-};
+interface Props {
+  text: string;
+  title?: string;
+  author?: string;
+  url: string;
+}
 
 class Story extends Component<Props> {
-  render() {
+  public render() {
     let metadata: ReactNode;
     if (this.props.title && this.props.author) {
       metadata = (

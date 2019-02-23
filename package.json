@@ -5,10 +5,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test && cypress run",
+    "test": "yarn lint && yarn test:unit --no-watch && yarn test:integration",
     "test:unit": "react-scripts test",
     "test:integration": "cypress run",
-    "test:coverage": "react-scripts test --coverage"
+    "test:coverage": "react-scripts test --coverage",
+    "lint": "tslint --fix --config tslint.json 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "browserslist": [
     ">0.2%",
@@ -16,9 +17,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -45,6 +43,9 @@
     "cypress": "^3.1.5",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
-    "react-test-renderer": "^16.8.3"
+    "react-test-renderer": "^16.8.3",
+    "tslint": "^5.12.1",
+    "tslint-no-unused-expression-chai": "^0.1.4",
+    "tslint-react": "^3.6.0"
   }
 }
