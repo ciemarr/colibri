@@ -1,5 +1,0 @@
-{
-  "chromeWebSecurity": false,
-  "fixturesFolder": "tests/integration/fixtures",
-  "integrationFolder": "tests/integration"
-}
