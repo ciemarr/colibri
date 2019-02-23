@@ -68,6 +68,7 @@ export default class StoryLoader extends Vue {
   }
 
   private async loadStory(storyUrl: string): Promise<string | null> {
+    this.loadingStatus = 'loading';
     try {
       const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
       const response = await this.axios.get(proxiedUrl);

@@ -9,9 +9,10 @@ describe('StoryLoader', () => {
     const data = 'Hello, world!';
     const storyUrl = 'http://www.example.com/story/42';
     const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
+    const storyPromise = Promise.resolve({data});
 
     const axios = {
-      get: sinon.stub().withArgs(proxiedUrl).returns(Promise.resolve({data}))
+      get: sinon.stub().withArgs(proxiedUrl).returns(storyPromise)
     };
 
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
@@ -22,16 +23,15 @@ describe('StoryLoader', () => {
 
     subject.find('.StoryLoader-read-button').trigger('click');
 
+    await storyPromise;
     await subject.vm.$nextTick();
 
     const storyLoader = subject.vm as StoryLoader;
-    const story = subject.find(Story).vm as Story;
-
-    expect(storyLoader.loadingStatus).to.eq('succeeded');
-    expect(story.title).to.eq('A Greeting');
-    expect(story.author).to.eq('CS Tradition');
-    expect(story.text).to.eq(data);
     expect(axios.get).to.have.been.calledOnceWith(proxiedUrl);
+    expect(storyLoader.loadingStatus).to.eq('succeeded');
+    expect(storyLoader.title).to.eq('A Greeting');
+    expect(storyLoader.author).to.eq('CS Tradition');
+    expect(storyLoader.text).to.eq(data);
   });
 
   it('shows a loading indicator', () => {
@@ -41,6 +41,7 @@ describe('StoryLoader', () => {
 
     const subject = shallowMount(StoryLoader, { propsData: { axios } });
 
+    subject.find('.StoryLoader-url').setValue('some unmocked url');
     subject.find('.StoryLoader-read-button').trigger('click');
 
     const storyLoader = subject.vm as StoryLoader;
