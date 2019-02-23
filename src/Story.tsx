@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from 'react';
+import './Story.scss';
 
 type Props = {
   text: string,
@@ -28,8 +29,11 @@ class Story extends Component<Props> {
           {metadata}
         </div>
 
-        <div className="Story-text">
-          {this.props.text}
+        <div className="Story-text-container">
+          <div className="Story-text">
+            {this.props.text}
+          </div>
+          <div className="Story-fin">❧</div>
         </div>
 
       </div>

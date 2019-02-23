@@ -1,0 +1,73 @@
+@import './colors.scss';
+
+.Story {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+%Story-header-footer {
+  background-color: $dark-gray;
+  padding: 1em;
+  display: flex;
+}
+
+.Story-metadata {
+  @extend %Story-header-footer;
+}
+
+.Story-title {
+  flex-grow: 1;
+  font-weight: bold;
+}
+
+.Story-author {
+  font-style: italic;
+}
+
+.Story-url {
+  font-family: monospace;
+  margin: 0 auto;
+}
+
+.Story-text-container {
+  flex-grow: 1;
+  padding: 0.5rem 1rem;
+  /*
+  background: linear-gradient(
+    to bottom,
+    #fbf6ed20,
+    #fbf6ed20 50%,
+    #efefef40 50%,
+    #efefef40
+  );
+  background-size: 100% calc(2 * (100vh - 2rem));
+  */
+}
+
+.Story-text {
+  max-width: 27rem;
+  margin: 0 auto;
+  line-height: 1.3em;
+  font-size: large;
+}
+
+.Story-pages-container {
+  @extend %Story-header-footer;
+  position: sticky;
+  bottom: 0;
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.Story-pages {
+  margin: 0 auto;
+}
+
+.Story-pages-current {
+  font-weight: bold;
+}
+
+.Story-fin {
+  text-align: center;
+}
