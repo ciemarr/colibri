@@ -25,7 +25,7 @@
       "!src/__tests__/",
       "!src/_support/serviceWorker.ts",
       "!src/index.tsx",
-      "!src/setupTest.js",
+      "!src/setupTests.js",
       "!<rootDir>/node_modules/"
     ]
   },
