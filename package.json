@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "yarn lint && yarn test:unit --no-watch && yarn test:integration",
-    "test:unit": "react-scripts test",
+    "test:unit": "react-scripts test --verbose",
     "test:integration": "cypress run",
     "test:coverage": "react-scripts test --coverage",
     "coveralls": "react-scripts test --env=jsdom --coverage && cat coverage/lcov.info | coveralls",
@@ -24,7 +24,7 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/__tests__/",
       "!src/_support/serviceWorker.ts",
-      "!src/App/index.tsx",
+      "!src/index.tsx",
       "!src/setupTest.js",
       "!<rootDir>/node_modules/"
     ]
