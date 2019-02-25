@@ -2,9 +2,11 @@ import React from 'react';
 import { mount, shallow, ReactWrapper, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
 import Story, { Props } from './Story';
-import ReactDOM from 'react-dom';
+import { sanityCheckInstantiation } from '../_support/testHelpers';
 
 describe('Story', () => {
+  sanityCheckInstantiation(<Story {...defaultProps()} />, '.Story');
+
   describe('renders', () => {
     it('basic story data', () => {
       const subject = fullMount({
@@ -67,21 +69,6 @@ describe('Story', () => {
     xit('when on the second half of the last page', () => {});
     xit('when on the end of the last page', () => {});
     // tslint:enable: no-empty
-  });
-
-  describe('sanity check: make sure it can instatiate', () => {
-    it('with ReactDOM', () => {
-      const div = document.createElement('div');
-      ReactDOM.render(<Story {...defaultProps()} />, div);
-    });
-
-    it('with shallow', () => {
-      shallow(<Story {...defaultProps()} />);
-    });
-
-    it('with mount', () => {
-      mount(<Story {...defaultProps()} />);
-    });
   });
 
   function shallowMount(props: Partial<Props> = {}): ShallowWrapper<Story> {

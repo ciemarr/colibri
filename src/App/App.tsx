@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Story from './Story';
+import Story from '../Story/Story';
+import './App.scss';
 
 class App extends Component {
   public render() {
