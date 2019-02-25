@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from 'react';
+import { HeadProvider, Title } from 'react-head';
 import SanitizedHTML from 'react-sanitized-html';
 import sanitizeHtml from 'sanitize-html';
 import './Story.scss';
@@ -14,6 +15,9 @@ class Story extends Component<Props> {
   public render() {
     return (
       <div className="Story">
+        <HeadProvider>
+          <Title>{this.htmlTitle()}</Title>
+        </HeadProvider>
         <div className="Story-metadata">
           {this.renderMetadata()}
         </div>
@@ -55,6 +59,16 @@ class Story extends Component<Props> {
         <div className="Story-fin">❧</div>
       </React.Fragment>
     );
+  }
+
+  private htmlTitle(): string {
+    let title: string;
+    if (this.props.title && this.props.author) {
+      title = `${this.props.title} — ${this.props.author}`;
+    } else {
+      title = this.props.url;
+    }
+    return `Colibri: ${title}`;
   }
 }
 
