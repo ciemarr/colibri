@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow, ReactWrapper, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
-import Story, { Props } from './Story';
+import Story, { Props } from '../Story/Story';
 import { sanityCheckInstantiation } from '../_support/testHelpers';
 
 describe('Story', () => {

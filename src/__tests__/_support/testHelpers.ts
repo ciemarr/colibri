@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 
+// Appease jest + react-scripts: "Your test suite must contain at least one test."
+it('loads test helpers', () => { /* */ });
+
 export function sanityCheckInstantiation(component: ReactElement, cssSelector: string) {
 
   describe('sanity check: make sure it can instatiate', () => {

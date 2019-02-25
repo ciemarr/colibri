@@ -1,6 +1,6 @@
 import React from 'react';
-import App from '../../App/App';
-import { sanityCheckInstantiation } from '../_support/testHelpers';
+import App from '../App/App';
+import { sanityCheckInstantiation } from './_support/testHelpers';
 
 describe('App', () => {
   sanityCheckInstantiation(<App />, '.App');
