@@ -28,15 +28,21 @@
       "!<rootDir>/node_modules/"
     ]
   },
+  "engines": {
+    "yarn": ">=1.12.3"
+  },
   "dependencies": {
     "@types/jest": "24.0.6",
     "@types/node": "11.9.5",
     "@types/react": "16.8.4",
     "@types/react-dom": "16.8.2",
+    "@types/sanitize-html": "^1.18.2",
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-sanitized-html": "^2.0.0",
     "react-scripts": "2.1.5",
+    "sanitize-html": "^1.20.0",
     "typescript": "3.3.3333"
   },
   "devDependencies": {
@@ -51,8 +57,5 @@
     "tslint": "^5.12.1",
     "tslint-no-unused-expression-chai": "^0.1.4",
     "tslint-react": "^3.6.0"
-  },
-  "engines": {
-    "yarn": ">=1.12.3"
   }
 }

@@ -1,42 +1,59 @@
 import React, { Component, ReactNode } from 'react';
+import SanitizedHTML from 'react-sanitized-html';
+import sanitizeHtml from 'sanitize-html';
 import './Story.scss';
 
-interface Props {
-  text: string;
-  title?: string;
-  author?: string;
-  url: string;
+export interface Props {
+  readonly text: string;
+  readonly title?: string;
+  readonly author?: string;
+  readonly url: string;
 }
 
 class Story extends Component<Props> {
   public render() {
-    let metadata: ReactNode;
+    return (
+      <div className="Story">
+        <div className="Story-metadata">
+          {this.renderMetadata()}
+        </div>
+        <div className="Story-text-container">
+          {this.renderText()}
+        </div>
+      </div>
+    );
+  }
+
+  private renderMetadata(): ReactNode {
     if (this.props.title && this.props.author) {
-      metadata = (
+      return (
         <React.Fragment>
           <span className="Story-title">{this.props.title}</span>
           <span className="Story-author">{this.props.author}</span>
         </React.Fragment>
       );
-    } else {
-      metadata = <span className="Story-url">{this.props.url}</span>;
     }
 
+    return <span className="Story-url">{this.props.url}</span>;
+  }
+
+  private renderText(): ReactNode {
+    const allowedTags = sanitizeHtml.defaults.allowedTags.concat([
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    ]);
+
     return (
-      <div className="Story">
+      <React.Fragment>
 
-        <div className="Story-metadata">
-          {metadata}
+        <div className="Story-text">
+          <SanitizedHTML
+            allowedTags={allowedTags}
+            html={ this.props.text }
+          />
         </div>
 
-        <div className="Story-text-container">
-          <div className="Story-text">
-            {this.props.text}
-          </div>
-          <div className="Story-fin">❧</div>
-        </div>
-
-      </div>
+        <div className="Story-fin">❧</div>
+      </React.Fragment>
     );
   }
 }
