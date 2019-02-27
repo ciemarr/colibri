@@ -10,7 +10,8 @@
     "test:integration": "cypress run",
     "test:coverage": "react-scripts test --coverage",
     "coveralls": "react-scripts test --env=jsdom --coverage && cat coverage/lcov.info | coveralls",
-    "lint": "tslint --fix --config tslint.json 'src/**/*.{js,jsx,ts,tsx}'"
+    "lint": "tslint --fix --config tslint.json 'src/**/*.{js,jsx,ts,tsx}'",
+    "analyze-bundle-size": "yarn build && source-map-explorer build/static/js/main.*"
   },
   "browserslist": [
     ">0.2%",
@@ -37,11 +38,15 @@
     "@types/node": "11.9.5",
     "@types/react": "16.8.4",
     "@types/react-dom": "16.8.2",
+    "@types/react-router-dom": "^4.3.1",
     "@types/sanitize-html": "^1.18.2",
+    "axios": "^0.18.0",
+    "localforage": "^1.7.3",
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-head": "^3.1.0",
+    "react-router-dom": "^4.3.1",
     "react-sanitized-html": "^2.0.0",
     "react-scripts": "2.1.5",
     "sanitize-html": "^1.20.0",
@@ -56,6 +61,9 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
     "react-test-renderer": "^16.8.3",
+    "sinon": "^7.2.4",
+    "sinon-chai": "^3.3.0",
+    "source-map-explorer": "^1.7.0",
     "tslint": "^5.12.1",
     "tslint-no-unused-expression-chai": "^0.1.4",
     "tslint-react": "^3.6.0"

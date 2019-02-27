@@ -19,6 +19,7 @@ describe('Story', () => {
       expect(subject.find('.Story-text').text()).to.equal('myText');
       expect(subject.find('.Story-title').text()).to.equal('myTitle');
       expect(subject.find('.Story-author').text()).to.equal('myAuthor');
+      expect(subject.find('.Story-pages-current').text()).to.equal('1');
       expect(subject.find('.Story-url').length).to.equal(0);
     });
 
@@ -47,28 +48,130 @@ describe('Story', () => {
     });
   });
 
-  // tslint:disable: no-empty
   xit('resize happens on load', () => {});
 
-  xdescribe('calculates total pages', () => {
-    xit('when full text is equal to one screenful', () => {});
-    xit('when full text is less than one screenful', () => {});
-    xit('when full text is greater than one screenful', () => {});
-    xit('when full text is not evenly divisible by screenfuls', () => {});
-  });
+  describe('page counts', () => {
+    const lineHeight = 10;
+    let subject: ShallowWrapper<Story>;
+    let story: Story;
 
-  xdescribe('calculates current page', () => {
-    xit('when at the top of the window', () => {});
-    xit('when at the bottom of the window', () => {});
-    xit('when on the first half of the first page', () => {});
-    xit('when on the second half of the first page', () => {});
-    xit('when on the first half a middle page', () => {});
-    xit('when on the second half a middle page', () => {});
-    xit('when on the second half of the second-to-last page', () => {});
-    xit('when on the first half of the last page', () => {});
-    xit('when on the second half of the last page', () => {});
-    xit('when on the end of the last page', () => {});
-    // tslint:enable: no-empty
+    beforeEach(() => {
+      subject = shallowMount();
+      story = subject.instance() as Story;
+    });
+
+    describe('calculates total pages', () => {
+      it('when full text is equal to one screenful', () => {
+        const pages = story.calculateTotalPages(lineHeight, lineHeight, lineHeight);
+        expect(pages).to.eq(1);
+      });
+
+      it('when full text is less than one screenful', () => {
+        const fullStoryTextHeight = 20;
+        const visibleHeight = 200;
+
+        const pages = story.calculateTotalPages(
+          visibleHeight, fullStoryTextHeight, lineHeight
+        );
+
+        expect(pages).to.eq(1);
+      });
+
+      it('when full text is greater than one screenful', () => {
+        const fullStoryTextHeight = 200;
+        const visibleHeight = 20;
+
+        const pages = story.calculateTotalPages(
+          visibleHeight, fullStoryTextHeight, lineHeight
+        );
+
+        expect(pages).to.eq(10);
+      });
+
+      it('when full text is not evenly divisible by screenfuls', () => {
+        const fullStoryTextHeight = 25;
+        const visibleHeight = 20;
+
+        const pages = story.calculateTotalPages(
+          visibleHeight, fullStoryTextHeight, lineHeight
+        );
+
+        expect(pages).to.eq(2);
+      });
+    });
+
+    describe('calculates current page', () => {
+      const totalPages = 5;
+      const totalHeight = 25;
+
+      beforeEach(() => {
+        story.setState({ totalPages });
+      });
+
+      /*
+
+      0    5   10   15   20   25     pixels
+      |----|----|----|----|----|     scroll position (vertical in real life)
+         1    2    3    4    5       page
+
+       0.0 to  2.5 px = page 1
+       2.5 to  7.5 px = page 2 (becomes "next page" when halfway thru prev page)
+       7.5 to 12.5 px = page 3
+      12.5 to 17.5 px = page 4
+      17.5 to 22.5 px = page 5
+      22.5 to 25.0 px = page 5 (still last page at the very end)
+
+      */
+
+      it('when at the top of the window', () => {
+        const page = story.calculateCurrentPage(0, totalHeight);
+        expect(page).to.eq(1);
+      });
+
+      it('when at the bottom of the window', () => {
+        const page = story.calculateCurrentPage(totalHeight, totalHeight);
+        expect(page).to.eq(totalPages);
+      });
+
+      it('when on the first half of the first page', () => {
+        const page = story.calculateCurrentPage(2.49, totalHeight);
+        expect(page).to.eq(1);
+      });
+
+      it('when on the second half of the first page', () => {
+        const page = story.calculateCurrentPage(2.5, totalHeight);
+        expect(page).to.eq(2);
+      });
+
+      it('when on the first half of a middle page', () => {
+        const page = story.calculateCurrentPage(7.5, totalHeight);
+        expect(page).to.eq(3);
+      });
+
+      it('when on the second half of a middle page', () => {
+        const page = story.calculateCurrentPage(12.49, totalHeight);
+        expect(page).to.eq(3);
+      });
+
+      it('when on the second half of the second-to-last page', () => {
+        const page = story.calculateCurrentPage(17.49, totalHeight);
+        expect(page).to.eq(totalPages - 1);
+      });
+
+      it('when on the first half of the last page', () => {
+        const page = story.calculateCurrentPage(17.5, totalHeight);
+        expect(page).to.eq(totalPages);
+      });
+      it('when on the second half of the last page', () => {
+        const page = story.calculateCurrentPage(22.49, totalHeight);
+        expect(page).to.eq(totalPages);
+      });
+
+      it('when on the end of the last page', () => {
+        const page = story.calculateCurrentPage(22.5, totalHeight);
+        expect(page).to.eq(totalPages);
+      });
+    });
   });
 
   function shallowMount(props: Partial<Props> = {}): ShallowWrapper<Story> {

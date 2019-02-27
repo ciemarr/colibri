@@ -1,3 +1,9 @@
 $black: black;
 $dark-gray: #333;
 $white: white;
+
+$primary-bg: #009688;
+$primary-bg-disabled: lighten(desaturate($primary-bg, 90), 20);
+
+$primary-text: $white;
+$primary-text-disabled: darken($white, 20);
