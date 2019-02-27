@@ -81,8 +81,7 @@ describe('StoryLoader', () => {
     function setInputValue(
       subject: ReactWrapper | ShallowWrapper,
       name: string,
-      value: string)
-    {
+      value: string) {
       const input = subject.find(`.StoryLoader-${name}`);
       input.simulate('change', { target: { name, value } });
       subject.update();

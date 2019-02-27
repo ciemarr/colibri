@@ -89,7 +89,7 @@ class StoryLoader extends Component<Props, State> {
         onChange={this.onInputChange}
       />
     );
-  };
+  }
 
   private async updateStoryText() {
     if (!this.hasRequiredData()) return;

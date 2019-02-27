@@ -48,8 +48,6 @@ describe('Story', () => {
     });
   });
 
-  xit('resize happens on load', () => {});
-
   describe('page counts', () => {
     const lineHeight = 10;
     let subject: ShallowWrapper<Story>;
