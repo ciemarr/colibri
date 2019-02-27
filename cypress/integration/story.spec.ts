@@ -1,6 +1,7 @@
 /// <reference types="Cypress" />
 
 context('Story', () => {
+  /*
   const chai = require('chai');
 
   describe('loads a story', () => {
@@ -48,6 +49,7 @@ context('Story', () => {
       cy.get('.Story-author').should('not.exist');
     });
   });
+  */
 
   it('does not try to load a story without a URL', () => {
     cy.visit('/story');
@@ -74,6 +76,7 @@ context('Story', () => {
     cy.contains('Failed to load.');
   });
 
+  /*
   it('updates total page count on window resize', (done) => {
     cy.server();
 
@@ -113,7 +116,6 @@ context('Story', () => {
 
     const storyUrl = 'http://www.example.com/story/42';
     const storyText = 'Hello, world! '.repeat(1000);
-    console.log(storyText); // XXX
     cy.route(storyUrl, storyText).as('externalStory');
 
     cy.visit('/story');
@@ -122,9 +124,6 @@ context('Story', () => {
     cy.contains('Read Story').click();
 
     cy.wait('@externalStory');
-
-    let initialCurrentPage;
-    let resizedTotalPages;
 
     cy.get('.Story-pages-current')
       .invoke('text')
@@ -141,4 +140,5 @@ context('Story', () => {
         done();
       });
   });
+  */
 });
