@@ -9,6 +9,7 @@ import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import { MinimalAxios } from '../_support/MinimalAxios';
+import { Story } from '../Story/Story';
 
 describe('StoryLoader', () => {
   sanityCheckInstantiation(<StoryLoader {...defaultProps()} />, '.StoryLoader');
@@ -38,13 +39,10 @@ describe('StoryLoader', () => {
       const subject = fullMount({
         axios: mockAxios,
         storage: mockStorage,
-        story: {
-          text: '',
-          title: 'A Greeting',
-          author: 'CS Tradition',
-          url: storyUrl,
-          storage: mockStorage,
-        },
+        text: '',
+        title: 'A Greeting',
+        author: 'CS Tradition',
+        url: storyUrl,
       });
 
       await storagePromise;
@@ -111,7 +109,8 @@ describe('StoryLoader', () => {
     const subject = fullMount({
       axios: mockAxios,
       storage: mockStorage,
-      story: { url: 'some url', text: '', storage: mockStorage }
+      url: 'some url',
+      text: '',
     });
 
     expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
@@ -123,7 +122,7 @@ describe('StoryLoader', () => {
     const subject = shallowMount({
       axios: mockAxios,
       storage: mockStorage,
-      story: { text: 'some story text', storage: mockStorage },
+      text: 'some story text',
     });
 
     subject.find('.StoryLoader-read-button').simulate('click');
@@ -152,17 +151,11 @@ describe('StoryLoader', () => {
   }
 
   function defaultProps(props: Partial<Props> = {}): Props {
-    const storage = props.storage || new MinimalLocalForageStub();
-
-    const storyProps: StoryProps = {
-      text: 'default test text',
-      storage,
-    };
-
     return {
-      story: {...storyProps, ...props.story},
       axios: props.axios || new MinimalAxiosStub(),
-      storage,
+      storage: props.storage || new MinimalLocalForageStub(),
+      text: 'default test text',
+      ...props
     };
   }
 });

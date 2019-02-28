@@ -3,13 +3,10 @@ import { HeadProvider, Title } from 'react-head';
 import SanitizedHTML from 'react-sanitized-html';
 import sanitizeHtml from 'sanitize-html';
 import { MinimalLocalForage } from '../_support/MinimalLocalForage';
+import { Story } from './Story';
 import './Story.scss';
 
-export interface Props {
-  text: string;
-  title?: string;
-  author?: string;
-  url?: string;
+export interface Props extends Story {
   readonly storage: MinimalLocalForage;
 }
 

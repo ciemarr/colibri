@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { MinimalAxios } from '../_support/MinimalAxios';
-import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import StoryView, { Props as StoryProps } from './StoryView';
+import { Story } from './Story';
 import './StoryLoader.scss';
 
 export enum LoadingStatus {
@@ -11,33 +11,25 @@ export enum LoadingStatus {
   MissingRequiredData,
 }
 
-export interface Props {
-  readonly story?: StoryProps;
+export interface Props extends StoryProps {
   readonly axios: MinimalAxios;
-  readonly storage: MinimalLocalForage;
 }
 
 export interface State {
   loadingStatus: LoadingStatus;
-  story: StoryProps;
+  story: Story;
 }
 
 class StoryLoader extends Component<Props, State> {
   public static readonly PROXY_URL: string = 'https://cors-anywhere.herokuapp.com';
 
   public state: State = {
-    loadingStatus: (this.props.story && !!this.props.story.url)
-      ? LoadingStatus.Loading : LoadingStatus.MissingRequiredData,
+    loadingStatus: (!!this.props.url) ? LoadingStatus.Loading : LoadingStatus.MissingRequiredData,
     story: this.defaultStoryState(),
   };
 
-  private defaultStoryState(): StoryProps {
-    const defaultProps: StoryProps = {
-      url: '',
-      text: '',
-      storage: this.props.storage,
-    };
-    return { ...defaultProps, ...this.props.story };
+  private defaultStoryState(): Story {
+    return { url: '', text: '', ...this.props };
   }
 
   constructor(props: Props) {
@@ -70,7 +62,7 @@ class StoryLoader extends Component<Props, State> {
         return <p>Failed to load.</p>;
 
       case LoadingStatus.Succeeded:
-        return <StoryView {...this.state.story} />;
+        return <StoryView {...this.state.story} storage={this.props.storage} />;
 
       default:
         return <p>Unknown error!</p>;
@@ -86,7 +78,7 @@ class StoryLoader extends Component<Props, State> {
 
         <button
           className="StoryLoader-read-button"
-          disabled={!this.hasRequiredData()}
+          disabled={!this.state.story.url}
           onClick={this.updateStoryText}
         >
           Read Story
@@ -95,24 +87,24 @@ class StoryLoader extends Component<Props, State> {
     );
   }
 
-  private renderInput(attr: keyof StoryProps): ReactNode {
+  private renderInput(attr: keyof Story): ReactNode {
     return (
       <input
         className={`StoryLoader-${attr}`}
         placeholder={`story ${attr}`}
         name={attr}
-        defaultValue={this.state.story[attr] as string}
+        defaultValue={this.state.story[attr]}
         onChange={this.onInputChange}
       />
     );
   }
 
   private async updateStoryText() {
-    if (!this.hasRequiredData()) return;
+    if (!this.state.story.url) return;
+    const storyUrl = this.state.story.url;
 
     this.setState({ loadingStatus: LoadingStatus.Loading }, async () => {
 
-      const storyUrl = this.state.story.url!;
       let storyText = await this.props.storage.getItem<string>(storyUrl);
 
       if (!storyText) {
@@ -142,10 +134,6 @@ class StoryLoader extends Component<Props, State> {
     const story = this.state.story;
     (story as any)[target.name] = target.value;
     this.setState({ story });
-  }
-
-  private hasRequiredData(): boolean {
-    return !!this.state.story.url;
   }
 }
 
