@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { MinimalAxios } from '../_support/MinimalAxios';
 import { MinimalLocalForage } from '../_support/MinimalLocalForage';
-import Story, { Props as StoryProps } from './Story';
+import StoryView, { Props as StoryProps } from './StoryView';
 import './StoryLoader.scss';
 
 export enum LoadingStatus {
@@ -70,7 +70,7 @@ class StoryLoader extends Component<Props, State> {
         return <p>Failed to load.</p>;
 
       case LoadingStatus.Succeeded:
-        return <Story {...this.state.story} />;
+        return <StoryView {...this.state.story} />;
 
       default:
         return <p>Unknown error!</p>;

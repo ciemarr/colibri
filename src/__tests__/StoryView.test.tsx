@@ -1,12 +1,12 @@
 import React from 'react';
 import { mount, shallow, ReactWrapper, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
-import Story, { Props } from '../Story/Story';
+import StoryView, { Props } from '../Story/StoryView';
 import { sanityCheckInstantiation } from './_support/testHelpers';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 
-describe('Story', () => {
-  sanityCheckInstantiation(<Story {...defaultProps()} />, '.Story');
+describe('StoryView', () => {
+  sanityCheckInstantiation(<StoryView {...defaultProps()} />, '.Story');
 
   describe('renders', () => {
     it('basic story data', () => {
@@ -51,12 +51,12 @@ describe('Story', () => {
 
   describe('page counts', () => {
     const lineHeight = 10;
-    let subject: ShallowWrapper<Story>;
-    let story: Story;
+    let subject: ShallowWrapper<StoryView>;
+    let story: StoryView;
 
     beforeEach(() => {
       subject = shallowMount();
-      story = subject.instance() as Story;
+      story = subject.instance() as StoryView;
     });
 
     describe('calculates total pages', () => {
@@ -173,12 +173,12 @@ describe('Story', () => {
     });
   });
 
-  function shallowMount(props: Partial<Props> = {}): ShallowWrapper<Story> {
-    return shallow(<Story {...defaultProps(props)} />);
+  function shallowMount(props: Partial<Props> = {}): ShallowWrapper<StoryView> {
+    return shallow(<StoryView {...defaultProps(props)} />);
   }
 
-  function fullMount(props: Partial<Props> = {}): ReactWrapper<Story> {
-    return mount(<Story {...defaultProps(props)} />);
+  function fullMount(props: Partial<Props> = {}): ReactWrapper<StoryView> {
+    return mount(<StoryView {...defaultProps(props)} />);
   }
 
   function defaultProps(props: Partial<Props> = {}): Props {

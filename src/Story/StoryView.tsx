@@ -18,7 +18,7 @@ interface State {
   totalPages: number;
 }
 
-class Story extends Component<Readonly<Props>, State> {
+class StoryView extends Component<Readonly<Props>, State> {
   private static readonly DEFAULT_LINE_HEIGHT = '16px';
 
   public state: State = {
@@ -139,7 +139,7 @@ class Story extends Component<Readonly<Props>, State> {
 
     const storyTextStyle = window.getComputedStyle(this.storyTextEl);
     const lineHeightStr = storyTextStyle.lineHeight;
-    const lineHeight = parseInt(lineHeightStr || Story.DEFAULT_LINE_HEIGHT, 10);
+    const lineHeight = parseInt(lineHeightStr || StoryView.DEFAULT_LINE_HEIGHT, 10);
 
     const totalPages = this.calculateTotalPages(
       window.innerHeight,
@@ -191,4 +191,4 @@ class Story extends Component<Readonly<Props>, State> {
   }
 }
 
-export default Story;
+export default StoryView;

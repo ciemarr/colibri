@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { sanityCheckInstantiation } from './_support/testHelpers';
 import { shallow, ShallowWrapper, ReactWrapper, mount } from 'enzyme';
 import StoryLoader, { Props, LoadingStatus } from '../Story/StoryLoader';
-import { Props as StoryProps} from '../Story/Story';
+import { Props as StoryProps} from '../Story/StoryView';
 import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 import { MinimalLocalForage } from '../_support/MinimalLocalForage';
