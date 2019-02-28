@@ -78,39 +78,7 @@ context('Story', () => {
     cy.contains('Failed to load.');
   });
 
-  it('updates total page count on window resize', (done) => {
-    cy.server();
+  // No test for current or total page updates because Cypress/jsdom don't seem
+  // to support resize or scroll events, or scrollHeights, properly.
 
-    const storyUrl = 'http://www.example.com/story/42';
-    const storyText = 'Hello, world! '.repeat(1000);
-    cy.route(storyUrl, storyText).as('externalStory');
-
-    cy.visit('/story');
-
-    cy.get('[placeholder="story url"]').focus().type(storyUrl);
-    cy.contains('Read Story').click();
-
-    cy.wait('@externalStory');
-
-    let initialTotalPages;
-    let resizedTotalPages;
-
-    cy.get('.Story-pages-total')
-      .invoke('text')
-      .then((totalPages) => {
-        initialTotalPages = totalPages;
-      })
-      .viewport(600, 400)
-      .wait(1)
-      .get('.Story-pages-total')
-      .invoke('text')
-      .then((totalPages) => {
-        resizedTotalPages = totalPages;
-        chai.expect(initialTotalPages).not.to.eq(resizedTotalPages);
-        done();
-      });
-  });
-
-  // No test for current page because Cypress/jsdom don't seem to support
-  // updating elements' scrollHeight property.
 });
