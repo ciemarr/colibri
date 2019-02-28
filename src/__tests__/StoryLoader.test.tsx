@@ -3,30 +3,38 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { sanityCheckInstantiation } from './_support/testHelpers';
 import { shallow, ShallowWrapper, ReactWrapper, mount } from 'enzyme';
-import axios from 'axios';
-import localforage from 'localforage';
 import StoryLoader, { Props, LoadingStatus } from '../Story/StoryLoader';
 import { Props as StoryProps} from '../Story/Story';
 import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
+import { MinimalLocalForage } from '../_support/MinimalLocalForage';
+import { MinimalAxios } from '../_support/MinimalAxios';
 
 describe('StoryLoader', () => {
   sanityCheckInstantiation(<StoryLoader {...defaultProps()} />, '.StoryLoader');
 
+  const data = 'Hello, world!';
+  const storyUrl = 'http://www.example.com/story/42';
+  const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
+
+  let storagePromise: Promise<string | null>;
+  let storyPromise: Promise<{data: string}>;
+
+  let mockStorage: MinimalLocalForage;
+  let mockAxios: MinimalAxios;
+
+  beforeEach(() => {
+    storagePromise = Promise.resolve(null);
+    mockStorage = new MinimalLocalForageStub();
+    mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
+
+    storyPromise = Promise.resolve({data});
+    mockAxios = new MinimalAxiosStub();
+    mockAxios.get = sinon.stub().withArgs(proxiedUrl).returns(storyPromise);
+  });
+
   describe('loads a story', () => {
-    const data = 'Hello, world!';
-    const storyUrl = 'http://www.example.com/story/42';
-    const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
-
     it('from props', async () => {
-      const storagePromise = Promise.resolve();
-      const mockStorage = new MinimalLocalForageStub();
-      mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
-
-      const storyPromise = Promise.resolve({data});
-      const mockAxios = new MinimalAxiosStub();
-      mockAxios.get = sinon.stub().withArgs(proxiedUrl).returns(storyPromise);
-
       const subject = fullMount({
         axios: mockAxios,
         storage: mockStorage,
@@ -40,10 +48,7 @@ describe('StoryLoader', () => {
       });
 
       await storagePromise;
-      subject.update();
       await storyPromise;
-      subject.update();
-      subject.update();
 
       const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
@@ -56,14 +61,6 @@ describe('StoryLoader', () => {
     });
 
     it('from the form', async () => {
-      const storagePromise = Promise.resolve();
-      const mockStorage = new MinimalLocalForageStub();
-      mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
-
-      const storyPromise = Promise.resolve({data});
-      const mockAxios = new MinimalAxiosStub();
-      mockAxios.get = sinon.stub().withArgs(proxiedUrl).returns(storyPromise);
-
       const subject = fullMount({
         axios: mockAxios,
         storage: mockStorage,
@@ -73,13 +70,9 @@ describe('StoryLoader', () => {
       setInputValue(subject, 'author', 'CS Tradition');
       setInputValue(subject, 'url', storyUrl);
       subject.find('.StoryLoader-read-button').simulate('click');
-      subject.update();
 
       await storagePromise;
-      subject.update();
       await storyPromise;
-      subject.update();
-      subject.update();
 
       const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
@@ -92,18 +85,15 @@ describe('StoryLoader', () => {
     });
 
     it('from local storage', async () => {
-      const storagePromise = Promise.resolve(data);
-      const mockStorage = new MinimalLocalForageStub();
+      storagePromise = Promise.resolve(data);
       mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
 
       const subject = shallowMount({ storage: mockStorage });
 
       setInputValue(subject, 'url', storyUrl);
       subject.find('.StoryLoader-read-button').simulate('click');
-      subject.update();
 
       await storagePromise;
-      subject.update();
 
       const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
@@ -112,24 +102,10 @@ describe('StoryLoader', () => {
       expect(storyLoader.state.story.url).to.eq(storyUrl);
       expect(storyLoader.state.story.text).to.eq(data);
     });
-
-    function setInputValue(
-      subject: ReactWrapper | ShallowWrapper,
-      name: string,
-      value: string) {
-      const input = subject.find(`.StoryLoader-${name}`);
-      input.simulate('change', { target: { name, value } });
-      subject.update();
-    }
   });
 
   it('shows a loading indicator', async () => {
-    const storagePromise = Promise.resolve();
-    const mockStorage = new MinimalLocalForageStub();
-    mockStorage.getItem = sinon.stub().returns(storagePromise);
-
-    const mockAxios = new MinimalAxiosStub();
-    const storyPromise = new Promise(() => {/* unresolved */});
+    storyPromise = new Promise(() => {/* unresolved */});
     mockAxios.get = sinon.stub().returns(storyPromise);
 
     const subject = fullMount({
@@ -138,17 +114,10 @@ describe('StoryLoader', () => {
       story: { url: 'some url', text: '', storage: mockStorage }
     });
 
-    subject.update();
-
     expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
   });
 
   it('disables "Read Story" button when url is missing', async () => {
-    const storagePromise = Promise.resolve();
-    const mockStorage = new MinimalLocalForageStub();
-    mockStorage.getItem = sinon.stub().returns(storagePromise);
-
-    const mockAxios = new MinimalAxiosStub();
     mockAxios.get = sinon.stub().returns(new Promise(() => {/* */}));
 
     const subject = shallowMount({
@@ -159,12 +128,20 @@ describe('StoryLoader', () => {
 
     subject.find('.StoryLoader-read-button').simulate('click');
     await mockAxios.get;
-    subject.update();
 
     const storyLoader = subject.instance() as StoryLoader;
     // TODO: better test! doesn't have to be hampered by Vue version
     expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.MissingRequiredData);
   });
+
+  function setInputValue(
+    subject: ReactWrapper | ShallowWrapper,
+    name: string,
+    value: string)
+  {
+    const input = subject.find(`.StoryLoader-${name}`);
+    input.simulate('change', { target: { name, value } });
+  }
 
   function shallowMount(props: Partial<Props> = {}): ShallowWrapper {
     return shallow(<StoryLoader {...defaultProps(props)} />);

@@ -18,6 +18,7 @@
     "member-ordering": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
+    "one-line": [true, "check-catch", "check-finally", "check-else", "check-whitespace"],
     "only-arrow-functions": false,
     "ordered-imports": false,
     "quotemark": [
