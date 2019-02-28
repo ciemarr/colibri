@@ -99,6 +99,28 @@ describe('StoryLoader', () => {
       expect(storyLoader.state.story.text).to.eq(data);
     });
 
+    it('from local storage', async () => {
+      const storagePromise = Promise.resolve(data);
+      const mockStorage = new MinimalLocalForageStub();
+      mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
+
+      const subject = shallowMount({ storage: mockStorage });
+
+      setInputValue(subject, 'url', storyUrl);
+      subject.find('.StoryLoader-read-button').simulate('click');
+      subject.update();
+
+      await storagePromise;
+      subject.update();
+
+      const storyLoader = subject.instance() as StoryLoader;
+      expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
+      // TODO: better test! doesn't have to be hampered by Vue version
+      expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
+      expect(storyLoader.state.story.url).to.eq(storyUrl);
+      expect(storyLoader.state.story.text).to.eq(data);
+    });
+
     function setInputValue(
       subject: ReactWrapper | ShallowWrapper,
       name: string,

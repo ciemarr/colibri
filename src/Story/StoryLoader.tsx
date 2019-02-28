@@ -112,11 +112,10 @@ class StoryLoader extends Component<Props, State> {
 
     this.setState({ loadingStatus: LoadingStatus.Loading }, async () => {
 
-      let storyText: string | null = null;
       const storyUrl = this.state.story.url!;
-      const savedStoryText = await this.props.storage.getItem<string>(storyUrl);
+      let storyText = await this.props.storage.getItem<string>(storyUrl);
 
-      if (!savedStoryText) {
+      if (!storyText) {
         try {
           const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
           const response = await this.props.axios.get(proxiedUrl);
