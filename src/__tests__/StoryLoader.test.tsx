@@ -11,20 +11,12 @@ import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 
 describe('StoryLoader', () => {
-  afterEach(() => {
-    sinon.restore();
-  });
-
   sanityCheckInstantiation(<StoryLoader {...defaultProps()} />, '.StoryLoader');
 
   describe('loads a story', () => {
     const data = 'Hello, world!';
     const storyUrl = 'http://www.example.com/story/42';
     const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
-
-    afterEach(() => {
-      sinon.restore();
-    });
 
     it('from props', async () => {
       const storagePromise = Promise.resolve();
