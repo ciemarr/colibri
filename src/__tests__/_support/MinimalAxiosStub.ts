@@ -6,22 +6,22 @@ it('loads test helpers', () => { /* */ });
 
 export class MinimalAxiosStub implements MinimalAxios {
   public get<T = any>(url: string, config?: AxiosRequestConfig | undefined): AxiosPromise<T> {
-    throw new Error('stub axios method not implemented');
+    throw new Error('stub axios method "get" not implemented');
   }
 
   public delete(url: string, config?: AxiosRequestConfig | undefined): AxiosPromise<any> {
-    throw new Error('stub axios method not implemented');
+    throw new Error('stub axios method "delete" not implemented');
   }
 
   public post<T = any>(url: string, data?: any, config?: AxiosRequestConfig | undefined): AxiosPromise<T> {
-    throw new Error('stub axios method not implemented');
+    throw new Error('stub axios method "post" not implemented');
   }
 
   public put<T = any>(url: string, data?: any, config?: AxiosRequestConfig | undefined): AxiosPromise<T> {
-    throw new Error('stub axios method not implemented');
+    throw new Error('stub axios method "put" not implemented');
   }
 
   public patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig | undefined): AxiosPromise<T> {
-    throw new Error('stub axios method not implemented');
+    throw new Error('stub axios method "patch" not implemented');
   }
 }

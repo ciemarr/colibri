@@ -2,7 +2,8 @@ import React from 'react';
 import { mount, shallow, ReactWrapper, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
 import Story, { Props } from '../Story/Story';
-import { sanityCheckInstantiation } from '../_support/testHelpers';
+import { sanityCheckInstantiation } from './_support/testHelpers';
+import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 
 describe('Story', () => {
   sanityCheckInstantiation(<Story {...defaultProps()} />, '.Story');
@@ -186,6 +187,7 @@ describe('Story', () => {
       title: 'default test title',
       author: 'default test author',
       url: 'default test url',
+      storage: new MinimalLocalForageStub(),
       ...props
     };
   }

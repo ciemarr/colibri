@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { MinimalAxios } from '../_support/MinimalAxios';
-import localForage from 'localforage';
+import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import Story, { Props as StoryProps } from './Story';
 import './StoryLoader.scss';
 
@@ -12,8 +12,9 @@ export enum LoadingStatus {
 }
 
 export interface Props {
-  readonly axios: MinimalAxios;
   readonly story?: StoryProps;
+  readonly axios: MinimalAxios;
+  readonly storage: MinimalLocalForage;
 }
 
 export interface State {
@@ -27,8 +28,17 @@ class StoryLoader extends Component<Props, State> {
   public state: State = {
     loadingStatus: (this.props.story && !!this.props.story.url)
       ? LoadingStatus.Loading : LoadingStatus.MissingRequiredData,
-    story: this.props.story || { url: '', text: '' },
+    story: this.defaultStoryState(),
   };
+
+  private defaultStoryState(): StoryProps {
+    const defaultProps: StoryProps = {
+      url: '',
+      text: '',
+      storage: this.props.storage,
+    };
+    return { ...defaultProps, ...this.props.story };
+  }
 
   constructor(props: Props) {
     super(props);
@@ -41,24 +51,30 @@ class StoryLoader extends Component<Props, State> {
   }
 
   public render() {
-    let content: ReactNode;
-    if (LoadingStatus.MissingRequiredData === this.state.loadingStatus) {
-      content = this.renderForm();
-    } else if (LoadingStatus.Loading === this.state.loadingStatus) {
-      content = <p>Loading...</p>;
-    } else if (LoadingStatus.Failed === this.state.loadingStatus) {
-      content = <p>Failed to load.</p>;
-    } else if (LoadingStatus.Succeeded === this.state.loadingStatus) {
-      content = <Story {...this.state.story} />;
-    } else {
-      content = <p>Unknown error!</p>;
-    }
-
     return (
       <div className="StoryLoader">
-        {content}
+        {this.renderContent()}
       </div>
     );
+  }
+
+  private renderContent(): ReactNode {
+    switch (this.state.loadingStatus) {
+      case LoadingStatus.MissingRequiredData:
+        return this.renderForm();
+
+      case LoadingStatus.Loading:
+        return <p>Loading...</p>;
+
+      case LoadingStatus.Failed:
+        return <p>Failed to load.</p>;
+
+      case LoadingStatus.Succeeded:
+        return <Story {...this.state.story} />;
+
+      default:
+        return <p>Unknown error!</p>;
+    }
   }
 
   private renderForm(): ReactNode {
@@ -85,7 +101,7 @@ class StoryLoader extends Component<Props, State> {
         className={`StoryLoader-${attr}`}
         placeholder={`story ${attr}`}
         name={attr}
-        defaultValue={this.state.story[attr]}
+        defaultValue={this.state.story[attr] as string}
         onChange={this.onInputChange}
       />
     );
@@ -96,18 +112,28 @@ class StoryLoader extends Component<Props, State> {
 
     this.setState({ loadingStatus: LoadingStatus.Loading }, async () => {
 
+      let storyText: string | null = null;
       const storyUrl = this.state.story.url!;
-      const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
+      const savedStoryText = await this.props.storage.getItem<string>(storyUrl);
 
-      try {
-        const storyText = await localForage.getItem<string>(storyUrl) || (await this.props.axios.get(proxiedUrl)).data;
-        localForage.setItem<string>(storyUrl, storyText);
-        const story = this.state.story;
-        story.text = storyText || '';
-        this.setState({ story, loadingStatus: LoadingStatus.Succeeded });
-      } catch (error) {
-        this.setState({ loadingStatus: LoadingStatus.Failed });
+      if (!savedStoryText) {
+        try {
+          const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
+          const response = await this.props.axios.get(proxiedUrl);
+          storyText = response.data;
+        } catch (error) {
+          return this.setState({ loadingStatus: LoadingStatus.Failed });
+        }
       }
+
+      if (!storyText) {
+        return this.setState({ loadingStatus: LoadingStatus.Failed });
+      }
+
+      this.props.storage.setItem<string>(storyUrl, storyText);
+      const story = this.state.story;
+      story.text = storyText || '';
+      this.setState({ story, loadingStatus: LoadingStatus.Succeeded });
 
     });
   }

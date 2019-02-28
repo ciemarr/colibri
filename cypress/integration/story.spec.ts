@@ -1,8 +1,11 @@
 /// <reference types="Cypress" />
 
 context('Story', () => {
-  /*
   const chai = require('chai');
+
+  beforeEach(() => {
+    indexedDB.deleteDatabase('localforage');
+  });
 
   describe('loads a story', () => {
     it('with author and title', () => {
@@ -49,7 +52,6 @@ context('Story', () => {
       cy.get('.Story-author').should('not.exist');
     });
   });
-  */
 
   it('does not try to load a story without a URL', () => {
     cy.visit('/story');
@@ -76,7 +78,6 @@ context('Story', () => {
     cy.contains('Failed to load.');
   });
 
-  /*
   it('updates total page count on window resize', (done) => {
     cy.server();
 
@@ -140,5 +141,4 @@ context('Story', () => {
         done();
       });
   });
-  */
 });

@@ -1,8 +1,8 @@
-import React, { Component, ReactNode, RefObject } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { HeadProvider, Title } from 'react-head';
-import localforage from 'localforage';
 import SanitizedHTML from 'react-sanitized-html';
 import sanitizeHtml from 'sanitize-html';
+import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import './Story.scss';
 
 export interface Props {
@@ -10,6 +10,7 @@ export interface Props {
   title?: string;
   author?: string;
   url?: string;
+  readonly storage: MinimalLocalForage;
 }
 
 interface State {
@@ -32,7 +33,7 @@ class Story extends Component<Readonly<Props>, State> {
   public async componentDidMount() {
     this.setTotalPages();
 
-    const savedScrollPosition = await localforage.getItem<number>(this.storageKey);
+    const savedScrollPosition = await this.props.storage.getItem<number>(this.storageKey);
     if (savedScrollPosition) {
       const options: ScrollToOptions = { top: savedScrollPosition };
       window.scrollTo(options);
@@ -169,7 +170,7 @@ class Story extends Component<Readonly<Props>, State> {
   private setCurrentPage = (): void => {
     if (!this.storyTextEl) return;
 
-    localforage.setItem<number>(this.storageKey, window.scrollY);
+    this.props.storage.setItem<number>(this.storageKey, window.scrollY);
 
     const currentPage = this.calculateCurrentPage(
       window.scrollY,

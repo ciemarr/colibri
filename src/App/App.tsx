@@ -4,6 +4,7 @@ import StoryLoader from '../Story/StoryLoader';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 import './App.scss';
+import localforage from 'localforage';
 
 class App extends Component {
   public render() {
@@ -17,7 +18,7 @@ class App extends Component {
             <Route
               path="/story"
               exact={true}
-              render={() => <StoryLoader axios={axios} />}
+              render={() => <StoryLoader axios={axios} storage={localforage} />}
             />
 
             <Route path="*" render={() => <p>Page not found.</p>} />
