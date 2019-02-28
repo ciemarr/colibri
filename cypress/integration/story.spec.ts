@@ -83,7 +83,6 @@ context('Story', () => {
 
     const storyUrl = 'http://www.example.com/story/42';
     const storyText = 'Hello, world! '.repeat(1000);
-    console.log(storyText); // XXX
     cy.route(storyUrl, storyText).as('externalStory');
 
     cy.visit('/story');
@@ -112,33 +111,6 @@ context('Story', () => {
       });
   });
 
-  it('updates current page on window scroll', (done) => {
-    cy.server();
-
-    const storyUrl = 'http://www.example.com/story/42';
-    const storyText = 'Hello, world! '.repeat(1000);
-    cy.route(storyUrl, storyText).as('externalStory');
-
-    cy.visit('/story');
-
-    cy.get('[placeholder="story url"]').focus().type(storyUrl);
-    cy.contains('Read Story').click();
-
-    cy.wait('@externalStory');
-
-    cy.get('.Story-pages-current')
-      .invoke('text')
-      .then((currentPage) => {
-        chai.expect(currentPage).to.eq('1');
-      })
-      .get('.Story-pages')
-      .scrollIntoView()
-      .wait(1)
-      .get('.Story-pages-current')
-      .invoke('text')
-      .then((currentPage) => {
-        chai.expect(currentPage).to.not.eq('1');
-        done();
-      });
-  });
+  // No test for current page because Cypress/jsdom don't seem to support
+  // updating elements' scrollHeight property.
 });
