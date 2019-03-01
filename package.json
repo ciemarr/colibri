@@ -11,7 +11,8 @@
     "test:coverage": "react-scripts test --coverage",
     "coveralls": "react-scripts test --env=jsdom --coverage && cat coverage/lcov.info | coveralls",
     "lint": "tslint --fix --config tslint.json 'src/**/*.{js,jsx,ts,tsx}'",
-    "analyze-bundle-size": "yarn build && source-map-explorer build/static/js/main.*"
+    "analyze-bundle-size": "yarn build && source-map-explorer build/static/js/main.*",
+    "push": "yarn test && git push"
   },
   "browserslist": [
     ">0.2%",

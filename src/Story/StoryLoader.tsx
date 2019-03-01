@@ -17,7 +17,7 @@ export interface Props extends StoryProps {
 
 export interface State {
   loadingStatus: LoadingStatus;
-  story: Story;
+  story: Partial<Story>;
 }
 
 class StoryLoader extends Component<Props, State> {
@@ -28,8 +28,8 @@ class StoryLoader extends Component<Props, State> {
     story: this.defaultStoryState(),
   };
 
-  private defaultStoryState(): Story {
-    return { url: '', text: '', ...this.props };
+  private defaultStoryState(): Partial<Story> {
+    return { ...this.props };
   }
 
   constructor(props: Props) {

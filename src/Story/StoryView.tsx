@@ -6,7 +6,7 @@ import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import { Story } from './Story';
 import './Story.scss';
 
-export interface Props extends Story {
+export interface Props extends Partial<Story> {
   readonly storage: MinimalLocalForage;
 }
 

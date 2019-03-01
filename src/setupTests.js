@@ -11,7 +11,7 @@ chai.use(sinonChai);
 
 ////////////////////////////////////////////////////////////////////////
 
-import localforage from 'localforage';
+import localforage from "localforage";
 
 beforeEach(() => {
   sinon.restore();
