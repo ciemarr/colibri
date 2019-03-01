@@ -4,12 +4,10 @@ import sinon from 'sinon';
 import { sanityCheckInstantiation } from './_support/testHelpers';
 import { shallow, ShallowWrapper, ReactWrapper, mount } from 'enzyme';
 import StoryLoader, { Props, LoadingStatus } from '../Story/StoryLoader';
-import { Props as StoryProps} from '../Story/StoryView';
 import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
 import { MinimalLocalForageStub } from './_support/MinimalLocalForageStub';
 import { MinimalLocalForage } from '../_support/MinimalLocalForage';
 import { MinimalAxios } from '../_support/MinimalAxios';
-import { Story } from '../Story/Story';
 
 describe('StoryLoader', () => {
   sanityCheckInstantiation(<StoryLoader {...defaultProps()} />, '.StoryLoader');
@@ -41,7 +39,7 @@ describe('StoryLoader', () => {
         storage: mockStorage,
         text: '',
         title: 'A Greeting',
-        author: 'CS Tradition',
+        author: 'C.S. Tradition',
         url: storyUrl,
       });
 
@@ -54,7 +52,7 @@ describe('StoryLoader', () => {
       // TODO: better test! doesn't have to be hampered by Vue version
       expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
       expect(storyLoader.state.story.title).to.eq('A Greeting');
-      expect(storyLoader.state.story.author).to.eq('CS Tradition');
+      expect(storyLoader.state.story.author).to.eq('C.S. Tradition');
       expect(storyLoader.state.story.text).to.eq(data);
     });
 
@@ -65,7 +63,7 @@ describe('StoryLoader', () => {
       });
 
       setInputValue(subject, 'title', 'A Greeting');
-      setInputValue(subject, 'author', 'CS Tradition');
+      setInputValue(subject, 'author', 'C.S. Tradition');
       setInputValue(subject, 'url', storyUrl);
       subject.find('.StoryLoader-read-button').simulate('click');
 
@@ -78,7 +76,7 @@ describe('StoryLoader', () => {
       // TODO: better test! doesn't have to be hampered by Vue version
       expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
       expect(storyLoader.state.story.title).to.eq('A Greeting');
-      expect(storyLoader.state.story.author).to.eq('CS Tradition');
+      expect(storyLoader.state.story.author).to.eq('C.S. Tradition');
       expect(storyLoader.state.story.text).to.eq(data);
     });
 

@@ -18,14 +18,14 @@ context('Story', () => {
 
       cy.get('[placeholder="story url"]').focus().type(storyUrl);
       cy.get('[placeholder="story title"]').focus().type('A Greeting');
-      cy.get('[placeholder="story author"]').focus().type('CS Tradition');
+      cy.get('[placeholder="story author"]').focus().type('C.S. Tradition');
       cy.contains('Read Story').click();
 
       cy.wait('@externalStory');
 
-      cy.title().should('be', 'Colibri: A Greeting — CS Tradition');
+      cy.title().should('be', 'Colibri: A Greeting — C.S. Tradition');
       cy.get('.Story-title').contains('A Greeting');
-      cy.get('.Story-author').contains('CS Tradition');
+      cy.get('.Story-author').contains('C.S. Tradition');
       cy.get('.Story-text').contains(storyText);
       cy.get('.Story-pages').contains('page 1 of 1');
       cy.get('.Story-url').should('not.exist');
@@ -56,7 +56,7 @@ context('Story', () => {
   it('does not try to load a story without a URL', () => {
     cy.visit('/story');
 
-    cy.get('[placeholder="story author"]').focus().type('CS Tradition');
+    cy.get('[placeholder="story author"]').focus().type('C.S. Tradition');
     cy.get('[placeholder="story title"]').focus().type('A Greeting');
     cy.contains('Read Story').click({ force: true });
 
