@@ -105,7 +105,8 @@ class StoryLoader extends Component<Props, State> {
 
     this.setState({ loadingStatus: LoadingStatus.Loading }, async () => {
 
-      let storyText = await this.props.storage.getItem<string>(storyUrl);
+      const savedStoryText = await this.props.storage.getItem<string>(storyUrl);
+      let storyText = savedStoryText;
 
       if (!storyText) {
         try {
@@ -121,9 +122,11 @@ class StoryLoader extends Component<Props, State> {
         return this.setState({ loadingStatus: LoadingStatus.Failed });
       }
 
-      this.props.storage.setItem<string>(storyUrl, storyText);
-      const story = this.state.story;
-      story.text = storyText || '';
+      if (savedStoryText !== storyText) {
+        this.props.storage.setItem<string>(storyUrl, storyText);
+      }
+
+      const story = {...this.state.story, text: storyText || ''};
       this.setState({ story, loadingStatus: LoadingStatus.Succeeded });
 
     });

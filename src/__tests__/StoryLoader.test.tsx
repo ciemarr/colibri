@@ -16,16 +16,25 @@ describe('StoryLoader', () => {
   const storyUrl = 'http://www.example.com/story/42';
   const proxiedUrl = `${StoryLoader.PROXY_URL}/${storyUrl}`;
 
-  let storagePromise: Promise<string | null>;
+  let getItemPromise: Promise<string | null>;
+  let setItemPromise: Promise<void>;
   let storyPromise: Promise<{data: string}>;
 
   let mockStorage: MinimalLocalForage;
   let mockAxios: MinimalAxios;
 
   beforeEach(() => {
-    storagePromise = Promise.resolve(null);
+    getItemPromise = Promise.resolve(null);
+    setItemPromise = Promise.resolve();
+
     mockStorage = new MinimalLocalForageStub();
-    mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
+    mockStorage.getItem = sinon.stub()
+      .withArgs(storyUrl)
+      .returns(getItemPromise);
+
+    mockStorage.setItem = sinon.stub()
+      .withArgs(storyUrl, sinon.match.string)
+      .returns(setItemPromise);
 
     storyPromise = Promise.resolve({data});
     mockAxios = new MinimalAxiosStub();
@@ -43,13 +52,16 @@ describe('StoryLoader', () => {
         url: storyUrl,
       });
 
-      await storagePromise;
+      await getItemPromise;
+      await setItemPromise;
       await storyPromise;
 
-      const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
+      expect(mockStorage.setItem).to.have.been.calledWith(storyUrl, data);
       expect(mockAxios.get).to.have.been.calledOnceWith(proxiedUrl);
+
       // TODO: better test! doesn't have to be hampered by Vue version
+      const storyLoader = subject.instance() as StoryLoader;
       expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
       expect(storyLoader.state.story.title).to.eq('A Greeting');
       expect(storyLoader.state.story.author).to.eq('C.S. Tradition');
@@ -67,13 +79,16 @@ describe('StoryLoader', () => {
       setInputValue(subject, 'url', storyUrl);
       subject.find('.StoryLoader-read-button').simulate('click');
 
-      await storagePromise;
+      await getItemPromise;
+      await setItemPromise;
       await storyPromise;
 
-      const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
+      expect(mockStorage.setItem).to.have.been.calledWith(storyUrl, data);
       expect(mockAxios.get).to.have.been.calledOnceWith(proxiedUrl);
+
       // TODO: better test! doesn't have to be hampered by Vue version
+      const storyLoader = subject.instance() as StoryLoader;
       expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
       expect(storyLoader.state.story.title).to.eq('A Greeting');
       expect(storyLoader.state.story.author).to.eq('C.S. Tradition');
@@ -81,19 +96,22 @@ describe('StoryLoader', () => {
     });
 
     it('from local storage', async () => {
-      storagePromise = Promise.resolve(data);
-      mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(storagePromise);
+      getItemPromise = Promise.resolve(data);
+      mockStorage.getItem = sinon.stub().withArgs(storyUrl).returns(getItemPromise);
 
       const subject = shallowMount({ storage: mockStorage });
 
       setInputValue(subject, 'url', storyUrl);
       subject.find('.StoryLoader-read-button').simulate('click');
 
-      await storagePromise;
+      await getItemPromise;
 
-      const storyLoader = subject.instance() as StoryLoader;
       expect(mockStorage.getItem).to.have.been.calledWith(storyUrl);
+      expect(mockStorage.setItem).not.to.have.been.called;
+      expect(mockAxios.get).not.to.have.been.called;
+
       // TODO: better test! doesn't have to be hampered by Vue version
+      const storyLoader = subject.instance() as StoryLoader;
       expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.Succeeded);
       expect(storyLoader.state.story.url).to.eq(storyUrl);
       expect(storyLoader.state.story.text).to.eq(data);
@@ -115,8 +133,6 @@ describe('StoryLoader', () => {
   });
 
   it('disables "Read Story" button when url is missing', async () => {
-    mockAxios.get = sinon.stub().returns(new Promise(() => {/* */}));
-
     const subject = shallowMount({
       axios: mockAxios,
       storage: mockStorage,
@@ -124,10 +140,11 @@ describe('StoryLoader', () => {
     });
 
     subject.find('.StoryLoader-read-button').simulate('click');
-    await mockAxios.get;
 
-    const storyLoader = subject.instance() as StoryLoader;
+    expect(mockAxios.get).not.to.have.been.called;
+
     // TODO: better test! doesn't have to be hampered by Vue version
+    const storyLoader = subject.instance() as StoryLoader;
     expect(storyLoader.state.loadingStatus).to.eq(LoadingStatus.MissingRequiredData);
   });
 
