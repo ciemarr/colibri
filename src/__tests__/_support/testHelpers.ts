@@ -28,3 +28,9 @@ export function sanityCheckInstantiation(component: ReactElement, cssSelector: s
   });
 
 }
+
+export async function rejected<T>(promise: Promise<T>) {
+  await promise
+    .then(() => { throw new Error('expected promise to be rejected'); })
+    .catch(() => { /* do nothing, rejection is expected */ });
+}

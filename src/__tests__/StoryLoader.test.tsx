@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { sanityCheckInstantiation } from './_support/testHelpers';
+import { sanityCheckInstantiation, rejected } from './_support/testHelpers';
 import { shallow, ShallowWrapper, ReactWrapper, mount } from 'enzyme';
 import StoryLoader, { Props, LoadingStatus } from '../Story/StoryLoader';
 import { MinimalAxiosStub } from './_support/MinimalAxiosStub';
@@ -130,6 +130,40 @@ describe('StoryLoader', () => {
     });
 
     expect(subject.find('.StoryLoader').text()).to.eq('Loading...');
+  });
+
+  it('shows a failure indicator when the story url errors', async () => {
+    storyPromise = Promise.reject(new Error('fail to load'));
+    mockAxios.get = sinon.stub().returns(storyPromise);
+
+    const subject = fullMount({
+      axios: mockAxios,
+      storage: mockStorage,
+      url: 'some url',
+      text: '',
+    });
+
+    await getItemPromise;
+    await rejected(storyPromise);
+
+    expect(subject.find('.StoryLoader').text()).to.eq('Failed to load.');
+  });
+
+  it('shows a failure indicator when the story url returns no text', async () => {
+    storyPromise = Promise.resolve({ data: '' });
+    mockAxios.get = sinon.stub().returns(storyPromise);
+
+    const subject = fullMount({
+      axios: mockAxios,
+      storage: mockStorage,
+      url: 'some url',
+      text: '',
+    });
+
+    await getItemPromise;
+    await storyPromise;
+
+    expect(subject.find('.StoryLoader').text()).to.eq('Failed to load.');
   });
 
   it('disables "Read Story" button when url is missing', async () => {
