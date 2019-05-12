@@ -8,7 +8,7 @@ import localforage from 'localforage';
 
 class App extends Component {
   public render() {
-    // tslint:disable jsx-no-lambda
+    // tslint:disable jsx-no-lambda jsx-no-multiline-js
     return (
       <div className="App">
 
@@ -21,14 +21,24 @@ class App extends Component {
               render={() => <StoryLoader axios={axios} storage={localforage} />}
             />
 
-            <Route path="*" render={() => <p>Page not found.</p>} />
+            <Route
+              path="*"
+              render={() => {
+                return (
+                  <p>
+                    Page not found.
+                    Try <a href="/story">/story</a>.
+                  </p>
+                );
+              }}
+            />
 
           </Switch>
         </BrowserRouter>
 
       </div>
     );
-    // tslint:enable jsx-no-lambda
+    // tslint:enable jsx-no-lambda jsx-no-multiline-js
   }
 }
 
